@@ -25,7 +25,7 @@ export const manuscriptTypes = [
   "LaTeX",
   "Overleaf",
   "PDF",
-  "期刊 production 文件",
+  "期刊出版文件",
   "XML 项目",
   "其他",
 ];

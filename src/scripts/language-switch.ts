@@ -12,18 +12,11 @@ const zhToEn: Record<string, string> = {
   "联系": "Contact",
   "上传稿件": "Upload manuscript",
   "获取报价": "Get a quote",
-  "首页 Home": "Home",
-  "服务 Services": "Services",
-  "价格 Pricing": "Pricing",
-  "联系 Contact": "Contact",
-  "上传稿件 Upload": "Upload manuscript",
-  "隐私政策 Privacy Policy": "Privacy Policy",
-  "服务条款 Terms of Service": "Terms of Service",
-  "保密与学术伦理 Confidentiality & Ethics": "Confidentiality & Ethics",
   "提交与政策": "Submit & policies",
   "导航": "Navigation",
 
   "学术论文排版服务": "Academic Manuscript Formatting",
+  "学术论文投稿排版服务": "Academic Manuscript Formatting for Journal Submission",
   "为科研作者、学生作者、期刊和会议提供快速、可靠、价格灵活的 Word / PDF / LaTeX 论文排版、投稿文件整理、期刊文章排版和 JATS XML 生成服务。":
     "Fast, reliable, and flexible Word, PDF, LaTeX, submission-file, journal production, and JATS XML services for researchers, students, journals, and conferences.",
   "上传文件并获取报价": "Upload files for a quote",
@@ -31,9 +24,9 @@ const zhToEn: Record<string, string> = {
   "通常 1–3 个工作日": "Usually 1-3 business days",
   "专注期刊和会议论文排版": "Focused on journal and conference papers",
   "支持 Word、LaTeX、Overleaf": "Word, LaTeX, and Overleaf supported",
-  "可按目标期刊 author guidelines 排版": "Formatted to target journal author guidelines",
-  "支持 title page 和 blinded manuscript 整理": "Title page and blinded manuscript preparation",
-  "支持期刊文章 PDF production": "Journal PDF production support",
+  "可按目标期刊投稿指南排版": "Formatted to target journal author guidelines",
+  "支持标题页和匿名稿整理": "Title page and blinded manuscript preparation",
+  "支持期刊文章 PDF 出版排版": "Journal PDF production support",
   "支持 JATS XML 生成": "JATS XML conversion available",
   "服务概览": "Service overview",
   "覆盖从个人投稿到期刊出版的排版需求": "Formatting support from individual submission to journal production",
@@ -57,16 +50,16 @@ const zhToEn: Record<string, string> = {
   "为什么可信": "Why clients trust us",
   "专业、保密、边界清晰": "Professional, confidential, and ethically clear",
   "专业排版，编辑校对": "Professional, editor-checked formatting",
-  "Professional, editor-checked formatting：由排版编辑按目标期刊要求逐项整理格式，而非简单套模板。":
+  "由排版编辑按目标期刊要求逐项整理格式，而非简单套模板。":
     "Formatting editors check each requirement against the target journal instead of simply applying a template.",
   "文件全程保密": "Confidential handling",
-  "Confidential file handling：客户文件仅用于本次排版，不公开展示、不用于宣传，除非获得明确授权。":
+  "客户文件仅用于本次排版，不公开展示、不用于宣传，除非获得明确授权。":
     "Your files are used only for the requested service and are not displayed or used for promotion without explicit permission.",
   "交付快、价格灵活": "Fast turnaround, flexible pricing",
-  "Fast turnaround & affordable pricing：个人稿件通常 1–3 个工作日交付，价格按稿件实际情况灵活报价。":
+  "个人稿件通常 1–3 个工作日交付，价格按稿件实际情况灵活报价。":
     "Individual manuscripts are usually delivered within 1-3 business days, with pricing based on the actual manuscript.",
   "边界清晰、诚实可信": "Clear ethical boundaries",
-  "No ghostwriting、no fake references、no data manipulation、no publication guarantees：不代写、不编造参考文献、不修改数据、不承诺录用。":
+  "不代写、不编造参考文献、不修改数据、不承诺录用。":
     "No ghostwriting, fake references, data manipulation, or publication guarantees.",
   "服务边界": "Service boundaries",
   "我们做什么，不做什么": "What we do and do not provide",
@@ -74,9 +67,9 @@ const zhToEn: Record<string, string> = {
   "我们不提供": "We do not provide",
   "期刊与会议论文投稿格式排版": "Journal and conference submission formatting",
   "Word、LaTeX、Overleaf 排版": "Word, LaTeX, and Overleaf formatting",
-  "按 author guidelines 排版": "Formatting to author guidelines",
-  "title page 与 blinded manuscript 整理": "Title page and blinded manuscript preparation",
-  "期刊文章 PDF production": "Journal article PDF production",
+  "按投稿指南排版": "Formatting to author guidelines",
+  "标题页与匿名稿整理": "Title page and blinded manuscript preparation",
+  "期刊文章 PDF 出版排版": "Journal article PDF production",
   "代写论文": "Ghostwriting",
   "修改或编造研究数据": "Changing or fabricating research data",
   "编造参考文献": "Fabricating references",
@@ -113,12 +106,14 @@ const zhToEn: Record<string, string> = {
     "For SCI, SSCI, Scopus, EI, PubMed, and other formal journal submissions.",
   "适合 IEEE、ACM、Springer、Elsevier、Overleaf 和 LaTeX 稿件。":
     "For IEEE, ACM, Springer, Elsevier, Overleaf, and LaTeX manuscripts.",
-  "适合杂志社、会议、special issue、论文集和编辑部。":
+  "适合杂志社、会议、专刊、论文集和编辑部。":
     "For journals, conferences, special issues, proceedings, and editorial offices.",
   "适合期刊、出版社、编辑部和 OA 平台上传需求。":
     "For journals, publishers, editorial offices, and OA platform uploads.",
   "简单 Word 期刊稿": "Simple Word journal manuscripts",
-  "简短 research article": "Short research articles",
+  "简短通讯类论文": "Short communications",
+  "病例报告": "Case reports",
+  "简短研究论文": "Short research articles",
   "普通会议论文": "Standard conference papers",
   "图表较少、格式要求不复杂的稿件": "Manuscripts with few figures/tables and straightforward requirements",
   "按目标期刊基本格式调整": "Basic formatting to target journal requirements",
@@ -134,8 +129,8 @@ const zhToEn: Record<string, string> = {
   "大量复杂表格处理": "Large or complex table processing",
   "参考文献逐条深度核对": "Line-by-line reference verification",
   "图表与正文引用逐项核查": "Detailed figure/table citation checks",
-  "title page 深度整理": "Extensive title-page preparation",
-  "blinded manuscript 深度处理": "Extensive blinded-manuscript processing",
+  "标题页深度整理": "Extensive title-page preparation",
+  "匿名稿深度处理": "Extensive blinded-manuscript processing",
   "XML 生成": "XML creation",
   "语言润色": "Language editing",
   "适用于 6000 字以内、图表 5 个以内、参考文献 50 条以内的简单 Word 稿件。":
@@ -143,20 +138,20 @@ const zhToEn: Record<string, string> = {
   "准备正式投稿期刊的作者": "Authors preparing formal journal submissions",
   "SCI、SSCI、Scopus、EI、PubMed 投稿作者": "Authors submitting to SCI, SSCI, Scopus, EI, or PubMed journals",
   "普通英文期刊投稿作者": "Authors submitting to general English-language journals",
-  "按目标期刊 author guidelines 完整排版": "Complete formatting to target journal author guidelines",
+  "按目标期刊投稿指南完整排版": "Complete formatting to target journal author guidelines",
   "字体、行距、页边距整理": "Font, spacing, and margin cleanup",
   "图表编号统一": "Consistent figure/table numbering",
   "正文图表引用一致性基础检查": "Basic consistency check for in-text figure/table citations",
   "表格格式整理": "Table formatting",
   "参考文献格式统一": "Reference-style consistency",
-  "title page 整理": "Title page preparation",
-  "blinded manuscript 匿名稿处理": "Blinded manuscript preparation",
-  "funding、conflict of interest、ethics statement 等声明位置检查":
+  "标题页整理": "Title page preparation",
+  "匿名稿处理": "Blinded manuscript preparation",
+  "资助声明、利益冲突声明、伦理声明等位置检查":
     "Placement check for funding, conflict of interest, ethics statement, and related declarations",
   "文件命名整理": "File naming cleanup",
   "2 次小修改": "2 small revisions",
   "学术内容修改": "Academic-content editing",
-  "cover letter 重新写作": "Cover letter rewriting",
+  "投稿信重新写作": "Cover letter rewriting",
   "代投稿": "Submission on behalf of the author",
   "图片重绘": "Figure redrawing",
   "数据检查": "Data checking",
@@ -196,10 +191,10 @@ const zhToEn: Record<string, string> = {
   "OA 期刊": "OA journals",
   "出版社": "Publishers",
   "学术协会": "Academic associations",
-  "已录用文章 production 阶段": "Accepted manuscripts in production",
-  "accepted manuscript 转正式 PDF": "Accepted manuscript to final PDF",
-  "online first article": "Online-first articles",
-  "单篇 article layout": "Single-article layout",
+  "已录用文章出版排版阶段": "Accepted manuscripts in production",
+  "录用稿转正式 PDF": "Accepted manuscript to final PDF",
+  "在线优先发表文章": "Online-first articles",
+  "单篇文章版面排版": "Single-article layout",
   "期刊固定模板排版": "Journal fixed-template layout",
   "OJS 上传前文件整理": "Pre-OJS upload file preparation",
   "按期刊固定模板排版": "Layout to the journal's fixed template",
@@ -209,23 +204,23 @@ const zhToEn: Record<string, string> = {
   "收稿日期、修回日期、录用日期、上线日期整理": "Received/revised/accepted/online date formatting",
   "图表位置与标题统一": "Consistent figure/table placement and captions",
   "页眉页脚处理": "Header and footer handling",
-  "单篇文章 production 文件交付": "Single-article production-file delivery",
-  "copyediting": "Copyediting",
+  "单篇文章出版文件交付": "Single-article production-file delivery",
+  "内容编辑": "Copyediting",
   "DOI 注册": "DOI registration",
   "OJS 全流程管理": "Full OJS management",
   "XML 可作为增值服务单独收费。": "XML can be quoted as an optional add-on.",
-  "special issue": "Special issues",
+  "专刊": "Special issues",
   "会议论文集": "Conference proceedings",
   "出版服务机构": "Publishing-service providers",
   "科研服务公司": "Research-service companies",
   "建立统一排版模板": "Create a unified layout template",
   "批量文章格式统一": "Batch article-format consistency",
   "单篇 PDF 输出": "Individual PDF output",
-  "整期 PDF 或 proceedings PDF 输出": "Full-issue PDF or proceedings PDF output",
+  "整期 PDF 或论文集 PDF 输出": "Full-issue PDF or proceedings PDF output",
   "目录页": "Table of contents",
   "页码": "Pagination",
   "卷期号": "Volume and issue numbers",
-  "DOI / article number 位置整理": "DOI / article-number placement",
+  "DOI / 文章编号位置整理": "DOI / article-number placement",
   "作者和单位格式统一": "Consistent author and affiliation formatting",
   "图表和参考文献格式统一": "Consistent figures/tables and references",
   "文件夹结构整理": "Folder-structure cleanup",
@@ -238,14 +233,14 @@ const zhToEn: Record<string, string> = {
   "需要数据库收录或平台上传的期刊": "Journals needing database indexing or platform uploads",
   "需要结构化 XML 文件的出版项目": "Publishing projects needing structured XML files",
   "Word / PDF / 排版稿转 JATS XML": "Word / PDF / layout file to JATS XML",
-  "article metadata 标记": "Article metadata tagging",
-  "title、abstract、keywords 标记": "Title, abstract, and keywords tagging",
-  "author and affiliation 标记": "Author and affiliation tagging",
-  "funding、conflict of interest、ethics statement 标记":
+  "文章元数据标记": "Article metadata tagging",
+  "标题、摘要、关键词标记": "Title, abstract, and keywords tagging",
+  "作者与单位标记": "Author and affiliation tagging",
+  "资助声明、利益冲突声明、伦理声明标记":
     "Funding, conflict of interest, and ethics statement tagging",
-  "references 标记": "References tagging",
-  "figures and tables 基础标记": "Basic figures and tables tagging",
-  "DOI、volume、issue、page / article number 标记": "DOI, volume, issue, page / article-number tagging",
+  "参考文献标记": "References tagging",
+  "图表基础标记": "Basic figures and tables tagging",
+  "DOI、卷、期、页码 / 文章编号标记": "DOI, volume, issue, page / article-number tagging",
   "XML 文件交付": "XML file delivery",
   "基础结构检查": "Basic structure check",
   "基础 JATS XML": "Basic JATS XML",
@@ -261,13 +256,13 @@ const zhToEn: Record<string, string> = {
   "简单 Word 期刊稿、短论文、普通会议论文": "Simple Word journal manuscripts, short papers, standard conference papers",
   "SCI、SSCI、Scopus、EI、PubMed 等正式投稿稿件": "Formal SCI, SSCI, Scopus, EI, PubMed submissions",
   "IEEE、ACM、Springer、Elsevier、Overleaf、LaTeX 稿件": "IEEE, ACM, Springer, Elsevier, Overleaf, and LaTeX manuscripts",
-  "期刊录用后 PDF production、编辑部单篇排版": "Post-acceptance PDF production and single-article editorial layout",
-  "杂志社、会议、special issue、论文集、编辑部": "Journals, conferences, special issues, proceedings, and editorial offices",
+  "期刊录用后 PDF 出版排版、编辑部单篇排版": "Post-acceptance PDF production and single-article editorial layout",
+  "杂志社、会议、专刊、论文集、编辑部": "Journals, conferences, special issues, proceedings, and editorial offices",
   "期刊、出版社、编辑部、OA 平台上传需求": "Journal, publisher, editorial office, and OA platform upload needs",
-  "需要 PDF production 和 JATS XML 的期刊客户": "Journal clients needing both PDF production and JATS XML",
+  "需要 PDF 出版排版和 JATS XML 的期刊客户": "Journal clients needing both PDF production and JATS XML",
   "5–10 篇小批量": "Small batch of 5-10 articles",
   "10–30 篇会议论文": "10-30 conference papers",
-  "整期期刊 production": "Full-issue journal production",
+  "整期期刊出版排版": "Full-issue journal production",
   "长期月度排版支持": "Long-term monthly formatting support",
   "海外会议 / 期刊项目": "International conference / journal projects",
   "24 小时加急": "24-hour rush",
@@ -294,8 +289,10 @@ const zhToEn: Record<string, string> = {
   "个人作者": "Individual authors",
   "机构客户": "Institutions",
   "个人 / 机构": "Authors / institutions",
+  "ScholarFormat Studio 提供六项学术论文排版与出版服务，覆盖从个人投稿到期刊出版的完整流程。请提供目标期刊 / 会议与投稿指南，我们按要求排版。":
+    "ScholarFormat Studio provides six academic formatting and production services, covering the full workflow from individual submission to journal production. Send the target journal/conference and author guidelines, and we will format accordingly.",
   "面向个人作者的排版服务": "Services for individual authors",
-  "适合准备投稿期刊或会议的研究者，按目标期刊 author guidelines 完成排版，交付 Word / LaTeX 与 PDF 文件。":
+  "适合准备投稿期刊或会议的研究者，按目标期刊投稿指南完成排版，交付 Word / LaTeX 与 PDF 文件。":
     "For researchers preparing journal or conference submissions. We format to author guidelines and deliver Word/LaTeX and PDF files.",
   "面向期刊 / 会议 / 编辑部的服务": "Services for journals, conferences, and editorial offices",
   "面向编辑部、出版社、会议与协会，提供录用后出版排版、批量排版与结构化 JATS XML 转换。":
@@ -346,7 +343,7 @@ const zhToEn: Record<string, string> = {
   "以下信息能帮助我们更快确认服务范围并给出准确报价。":
     "These details help us confirm scope and quote accurately.",
   "目标期刊 / 会议名称": "Target journal / conference",
-  "author guidelines 链接或排版模板": "Author guidelines link or template",
+  "投稿指南链接或排版模板": "Author guidelines link or template",
   "稿件字数": "Word count",
   "图表与参考文献数量": "Number of figures/tables and references",
   "是否需要 LaTeX / XML": "Whether LaTeX / XML is needed",
@@ -369,7 +366,7 @@ const zhToEn: Record<string, string> = {
   "客户类型": "Customer type",
   "需要的服务": "Services needed",
   "（可多选）": "(multiple selections allowed)",
-  "目标期刊 author guidelines 链接": "Author guidelines link",
+  "目标期刊投稿指南链接": "Author guidelines link",
   "图表数量": "Figures / tables",
   "参考文献数量": "References",
   "是否需要 LaTeX": "Need LaTeX?",
@@ -385,6 +382,7 @@ const zhToEn: Record<string, string> = {
   "科研服务机构": "Research service provider",
   "其他": "Other",
   "不确定，需要建议": "Not sure, need advice",
+  "期刊出版文件": "Journal production files",
   "是": "Yes",
   "否": "No",
 
@@ -398,14 +396,14 @@ const zhToEn: Record<string, string> = {
   "支持 Word、LaTeX、PDF、图片、模板或压缩包，单文件 ≤ 50MB，可多选":
     "Word, LaTeX, PDF, images, templates, or archives supported. Max 50MB per file; multiple files allowed.",
   "上传其他材料": "Upload additional materials",
-  "可一并上传：目标期刊模板、author guidelines 文件、图表文件、参考文献文件、补充材料。":
+  "可一并上传：目标期刊模板、投稿指南文件、图表文件、参考文献文件、补充材料。":
     "You may also upload target journal templates, author guidelines, figure files, references, and supplementary materials.",
   "点击选择或拖放其他材料（选填）": "Click or drag additional materials (optional)",
-  "模板 / guidelines / 图表 / 参考文献 / 补充材料，可多选":
+  "模板 / 投稿指南 / 图表 / 参考文献 / 补充材料，可多选":
     "Templates / guidelines / figures / references / supplementary files; multiple files allowed",
   "目标期刊 / 会议链接": "Target journal / conference link",
-  "是否需要 blinded manuscript": "Need a blinded manuscript?",
-  "是否需要 title page": "Need a title page?",
+  "是否需要匿名稿": "Need a blinded manuscript?",
+  "是否需要标题页": "Need a title page?",
   "是否需要 JATS XML": "Need JATS XML?",
   "是否加急": "Rush delivery?",
   "特殊说明": "Special instructions",
@@ -414,7 +412,7 @@ const zhToEn: Record<string, string> = {
   "可以一起上传": "You can upload",
   "原始稿件（Word / LaTeX / PDF）": "Manuscript files (Word / LaTeX / PDF)",
   "目标期刊模板": "Target journal template",
-  "author guidelines 文件": "Author guidelines file",
+  "投稿指南文件": "Author guidelines file",
   "图表文件": "Figure/table files",
   "参考文献文件": "Reference files",
   "补充材料": "Supplementary materials",
@@ -436,7 +434,7 @@ const zhToEn: Record<string, string> = {
   "不做。ScholarFormat Studio 专注于期刊和会议论文的投稿格式排版，目前不提供毕业论文或学位论文格式调整服务。":
     "No. ScholarFormat Studio focuses on journal and conference submission formatting and does not currently provide thesis or dissertation formatting.",
   "你们提供论文代写吗？": "Do you provide ghostwriting?",
-  "不提供。我们只提供排版、格式整理、参考文献样式统一、图表编号、LaTeX 排版、PDF production 和 JATS XML 生成服务。":
+  "不提供。我们只提供排版、格式整理、参考文献样式统一、图表编号、LaTeX 排版、PDF 出版排版和 JATS XML 生成服务。":
     "No. We only provide formatting, style cleanup, reference-style consistency, figure/table numbering, LaTeX formatting, PDF production, and JATS XML services.",
   "你们提供语言润色吗？": "Do you provide language editing?",
   "目前不以语言润色作为主服务。我们的核心服务是学术论文排版和投稿文件整理。":
@@ -444,8 +442,8 @@ const zhToEn: Record<string, string> = {
   "你们能保证论文录用吗？": "Can you guarantee acceptance?",
   "不能。我们不承诺录用，也不影响期刊的学术评审结果。我们的服务仅限于帮助作者整理格式、减少投稿前的格式问题。":
     "No. We do not guarantee acceptance or influence peer review. Our service helps reduce formatting issues before submission.",
-  "你们可以按目标期刊 author guidelines 排版吗？": "Can you format to author guidelines?",
-  "可以。客户需要提供目标期刊名称、author guidelines 链接或模板文件。":
+  "你们可以按目标期刊投稿指南排版吗？": "Can you format to author guidelines?",
+  "可以。客户需要提供目标期刊名称、投稿指南链接或模板文件。":
     "Yes. Please provide the target journal name, author guidelines link, or template files.",
   "你们可以处理 LaTeX 或 Overleaf 吗？": "Can you work with LaTeX or Overleaf?",
   "可以。我们可以处理 LaTeX 模板套用、Overleaf 项目整理、BibTeX / BibLaTeX 参考文献、基础编译错误修复和 PDF 输出。":
@@ -469,7 +467,7 @@ const zhToEn: Record<string, string> = {
   "准备好开始了吗？": "Ready to get started?",
   "提交稿件信息或直接上传文件，我们会尽快确认服务范围并给出报价。":
     "Send manuscript details or upload files. We will confirm scope and quote as soon as possible.",
-  "ScholarFormat Studio 专注学术论文投稿排版，为科研作者、学生作者、期刊与会议提供 Word / LaTeX 排版、投稿文件整理、PDF production 与 JATS XML 生成服务。":
+  "ScholarFormat Studio 专注学术论文投稿排版，为科研作者、学生作者、期刊与会议提供 Word / LaTeX 排版、投稿文件整理、PDF 出版排版与 JATS XML 生成服务。":
     "ScholarFormat Studio provides academic manuscript formatting, submission-file preparation, PDF production, and JATS XML services for researchers, students, journals, and conferences.",
   "返回首页": "Back to home",
   "← 返回首页": "← Back to home",

@@ -13,10 +13,16 @@ const hasContact = Boolean(email || wechat || whatsapp);
   <div class="container site-footer__top">
     <div class="site-footer__brand">
       <Logo variant="invert" />
-      <p class="site-footer__tagline">{site.tagline}</p>
-      <p class="site-footer__desc">
+      <p class="site-footer__tagline" data-lang-panel="zh">学术论文投稿排版服务</p>
+      <p class="site-footer__tagline" data-lang-panel="en">{site.tagline}</p>
+      <p class="site-footer__desc" data-lang-panel="zh">
         ScholarFormat Studio 专注学术论文投稿排版，为科研作者、学生作者、期刊与会议提供 Word /
-        LaTeX 排版、投稿文件整理、PDF production 与 JATS XML 生成服务。
+        LaTeX 排版、投稿文件整理、PDF 出版排版与 JATS XML 生成服务。
+      </p>
+      <p class="site-footer__desc" data-lang-panel="en">
+        ScholarFormat Studio provides academic manuscript formatting, submission-file
+        preparation, PDF production, and JATS XML services for researchers, students,
+        journals, and conferences.
       </p>
 
       {
@@ -68,7 +74,8 @@ const hasContact = Boolean(email || wechat || whatsapp);
   <div class="site-footer__bottom">
     <div class="container site-footer__bottom-inner">
       <p>© {year} {site.brand}</p>
-      <p class="site-footer__operated">{site.tagline}</p>
+      <p class="site-footer__operated" data-lang-panel="zh">学术论文投稿排版服务</p>
+      <p class="site-footer__operated" data-lang-panel="en">{site.tagline}</p>
     </div>
   </div>
 </footer>
@@ -90,12 +97,19 @@ const hasContact = Boolean(email || wechat || whatsapp);
   .site-footer__tagline {
     margin-top: 0.9rem;
     color: rgba(255, 255, 255, 0.6);
+  }
+  .site-footer__tagline[data-lang-panel="en"] {
+    display: none;
     font-style: italic;
   }
   .site-footer__desc {
     margin-top: 0.8rem;
     line-height: var(--leading-relaxed);
     max-width: 42ch;
+  }
+  .site-footer__desc[data-lang-panel="en"],
+  .site-footer__operated[data-lang-panel="en"] {
+    display: none;
   }
 
   .site-footer__contact {
@@ -153,6 +167,17 @@ const hasContact = Boolean(email || wechat || whatsapp);
     padding-block: 1.4rem;
     color: rgba(255, 255, 255, 0.55);
     font-size: var(--text-xs);
+  }
+
+  :global(html[data-language="en"]) .site-footer__tagline[data-lang-panel="zh"],
+  :global(html[data-language="en"]) .site-footer__desc[data-lang-panel="zh"],
+  :global(html[data-language="en"]) .site-footer__operated[data-lang-panel="zh"] {
+    display: none;
+  }
+  :global(html[data-language="en"]) .site-footer__tagline[data-lang-panel="en"],
+  :global(html[data-language="en"]) .site-footer__desc[data-lang-panel="en"],
+  :global(html[data-language="en"]) .site-footer__operated[data-lang-panel="en"] {
+    display: block;
   }
 
   @media (max-width: 760px) {

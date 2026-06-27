@@ -29,20 +29,20 @@ export const footerNav: { title: string; items: NavItem[] }[] = [
   {
     title: "导航",
     items: [
-      { label: "首页 Home", href: "/" },
-      { label: "服务 Services", href: "/services" },
-      { label: "价格 Pricing", href: "/pricing" },
+      { label: "首页", href: "/" },
+      { label: "服务", href: "/services" },
+      { label: "价格", href: "/pricing" },
       { label: "FAQ", href: "/faq" },
     ],
   },
   {
     title: "提交与政策",
     items: [
-      { label: "联系 Contact", href: "/contact" },
-      { label: "上传稿件 Upload", href: "/upload" },
-      { label: "隐私政策 Privacy Policy", href: "/privacy" },
-      { label: "服务条款 Terms of Service", href: "/terms" },
-      { label: "保密与学术伦理 Confidentiality & Ethics", href: "/confidentiality" },
+      { label: "联系", href: "/contact" },
+      { label: "上传稿件", href: "/upload" },
+      { label: "隐私政策", href: "/privacy" },
+      { label: "服务条款", href: "/terms" },
+      { label: "保密与学术伦理", href: "/confidentiality" },
     ],
   },
 ];

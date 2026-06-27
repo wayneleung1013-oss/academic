@@ -26,8 +26,8 @@ const audienceLabel =
       </span>
       <div>
         <p class="svc__num">服务 {String(index + 1).padStart(2, "0")}</p>
-        <h3 class="svc__name">{service.nameZh}</h3>
-        <p class="svc__name-en">{service.name}</p>
+        <h3 class="svc__name" data-lang-panel="zh">{service.nameZh}</h3>
+        <h3 class="svc__name" data-lang-panel="en">{service.name}</h3>
       </div>
     </div>
     <div class="svc__meta">
@@ -220,10 +220,14 @@ const audienceLabel =
     font-size: var(--text-xl);
     margin-top: 0.15rem;
   }
-  .svc__name-en {
-    font-size: var(--text-sm);
-    color: var(--color-muted);
-    margin-top: 0.1rem;
+  .svc__name[data-lang-panel="en"] {
+    display: none;
+  }
+  :global(html[data-language="en"]) .svc__name[data-lang-panel="zh"] {
+    display: none;
+  }
+  :global(html[data-language="en"]) .svc__name[data-lang-panel="en"] {
+    display: block;
   }
   .svc__meta {
     display: flex;

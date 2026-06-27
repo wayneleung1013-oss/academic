@@ -16,7 +16,7 @@ const fieldLabels: Record<string, string> = {
   customer_type: "客户类型",
   services: "需要的服务",
   target_journal: "目标期刊 / 会议名称",
-  guidelines_url: "目标期刊 author guidelines 链接",
+  guidelines_url: "目标期刊投稿指南链接",
   word_count: "稿件字数",
   figure_count: "图表数量",
   reference_count: "参考文献数量",

@@ -36,7 +36,7 @@ export const site = {
     defaultTitle: "ScholarFormat Studio · 学术论文排版服务",
     titleTemplate: "%s · ScholarFormat Studio",
     description:
-      "ScholarFormat Studio 专注学术论文投稿排版：为科研作者、学生作者、期刊与会议提供 Word / LaTeX 论文排版、投稿文件整理、期刊文章 PDF production 与 JATS XML 生成服务。专业、保密、价格灵活。",
+      "ScholarFormat Studio 专注学术论文投稿排版：为科研作者、学生作者、期刊与会议提供 Word / LaTeX 论文排版、投稿文件整理、期刊文章 PDF 出版排版与 JATS XML 生成服务。专业、保密、价格灵活。",
     keywords: [
       "论文排版",
       "投稿排版",
@@ -44,7 +44,7 @@ export const site = {
       "LaTeX 排版",
       "JATS XML",
       "Word 排版",
-      "author guidelines 排版",
+      "投稿指南排版",
       "academic manuscript formatting",
       "journal submission formatting",
     ],

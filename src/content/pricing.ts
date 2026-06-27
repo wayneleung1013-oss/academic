@@ -33,13 +33,13 @@ export const institutionPricing: PriceRow[] = [
   {
     service: "期刊文章出版排版",
     price: "¥300–1000 / 篇",
-    suitableFor: "期刊录用后 PDF production、编辑部单篇排版",
+    suitableFor: "期刊录用后 PDF 出版排版、编辑部单篇排版",
     href: "/services#production",
   },
   {
     service: "期刊 / 会议批量排版",
     price: "按项目报价",
-    suitableFor: "杂志社、会议、special issue、论文集、编辑部",
+    suitableFor: "杂志社、会议、专刊、论文集、编辑部",
     href: "/services#batch",
   },
   {
@@ -51,7 +51,7 @@ export const institutionPricing: PriceRow[] = [
   {
     service: "PDF + XML 组合服务",
     price: "¥700–1500 / 篇",
-    suitableFor: "需要 PDF production 和 JATS XML 的期刊客户",
+    suitableFor: "需要 PDF 出版排版和 JATS XML 的期刊客户",
     href: "/services#jats-xml",
   },
 ];
@@ -65,7 +65,7 @@ export interface BatchPriceRow {
 export const batchReferencePricing: BatchPriceRow[] = [
   { project: "5–10 篇小批量", price: "¥3000–8000" },
   { project: "10–30 篇会议论文", price: "¥8000–25000" },
-  { project: "整期期刊 production", price: "¥5000–20000 / 期" },
+  { project: "整期期刊出版排版", price: "¥5000–20000 / 期" },
   { project: "长期月度排版支持", price: "¥5000–30000 / 月" },
   { project: "海外会议 / 期刊项目", price: "$800–5000+ / 项目" },
 ];

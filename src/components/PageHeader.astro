@@ -2,18 +2,20 @@
 /** 内页页眉（标题区）。 */
 export interface Props {
   eyebrow?: string;
+  eyebrowEn?: string;
   title: string;
   titleEn?: string;
   lead?: string;
 }
-const { eyebrow, title, titleEn, lead } = Astro.props;
+const { eyebrow, eyebrowEn, title, titleEn, lead } = Astro.props;
 ---
 
 <section class="page-header">
   <div class="container container--narrow">
-    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-    <h1 class="page-header__title">{title}</h1>
-    {titleEn && <p class="page-header__en">{titleEn}</p>}
+    {eyebrow && <p class="eyebrow" data-lang-panel="zh">{eyebrow}</p>}
+    {eyebrowEn && <p class="eyebrow" data-lang-panel="en">{eyebrowEn}</p>}
+    <h1 class="page-header__title" data-lang-panel="zh">{title}</h1>
+    {titleEn && <h1 class="page-header__title" data-lang-panel="en">{titleEn}</h1>}
     {lead && <p class="lead page-header__lead">{lead}</p>}
   </div>
 </section>
@@ -28,14 +30,26 @@ const { eyebrow, title, titleEn, lead } = Astro.props;
     font-size: var(--text-4xl);
     margin-top: 0.5rem;
   }
-  .page-header__en {
-    color: var(--color-muted);
-    font-size: var(--text-md);
-    margin-top: 0.4rem;
-    font-style: italic;
+  .page-header__title[data-lang-panel="en"] {
+    display: none;
+  }
+  .eyebrow[data-lang-panel="en"] {
+    display: none;
   }
   .page-header__lead {
     margin-top: 1rem;
     max-width: 60ch;
+  }
+  :global(html[data-language="en"]) .eyebrow[data-lang-panel="zh"] {
+    display: none;
+  }
+  :global(html[data-language="en"]) .eyebrow[data-lang-panel="en"] {
+    display: block;
+  }
+  :global(html[data-language="en"]) .page-header__title[data-lang-panel="zh"] {
+    display: none;
+  }
+  :global(html[data-language="en"]) .page-header__title[data-lang-panel="en"] {
+    display: block;
   }
 </style>

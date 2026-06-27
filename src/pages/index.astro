@@ -22,8 +22,8 @@ const homeFaqs = faqs.slice(0, 6);
     <div class="container hero__inner">
       <div class="hero__content">
         <Badge variant="primary">{hero.eyebrow}</Badge>
-        <h1 class="hero__title">{hero.title}</h1>
-        <p class="hero__title-en">{hero.titleEn}</p>
+        <h1 class="hero__title" data-lang-panel="zh">{hero.title}</h1>
+        <h1 class="hero__title" data-lang-panel="en">{hero.titleEn}</h1>
         <p class="hero__subtitle">{hero.subtitle}</p>
         <div class="hero__actions">
           <Button href={hero.primaryCta.href} size="lg" icon="arrowRight"
@@ -189,12 +189,14 @@ const homeFaqs = faqs.slice(0, 6);
     margin-top: 1rem;
     line-height: 1.1;
   }
-  .hero__title-en {
-    font-family: var(--font-serif);
-    font-size: var(--text-lg);
-    color: var(--color-primary);
-    margin-top: 0.6rem;
-    font-style: italic;
+  .hero__title[data-lang-panel="en"] {
+    display: none;
+  }
+  :global(html[data-language="en"]) .hero__title[data-lang-panel="zh"] {
+    display: none;
+  }
+  :global(html[data-language="en"]) .hero__title[data-lang-panel="en"] {
+    display: block;
   }
   .hero__subtitle {
     margin-top: 1.2rem;

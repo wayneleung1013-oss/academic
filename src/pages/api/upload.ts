@@ -56,8 +56,8 @@ const fieldLabels: Record<string, string> = {
   manuscript_type: "稿件类型",
   target_journal: "目标期刊 / 会议名称",
   target_url: "目标期刊 / 会议链接",
-  need_blinded: "是否需要 blinded manuscript",
-  need_titlepage: "是否需要 title page",
+  need_blinded: "是否需要匿名稿",
+  need_titlepage: "是否需要标题页",
   need_xml: "是否需要 JATS XML",
   rush: "是否加急",
   deadline: "期望交付时间",
@@ -469,19 +469,21 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 
-  const transporter = useResendApi
-    ? null
-    : nodemailer.createTransport({
-        host: smtpHostIp || smtpHost,
-        port: smtpPort,
-        secure,
-        auth: smtpUser ? { user: smtpUser, pass: smtpPass } : undefined,
-        proxy: proxy || undefined,
-        tls: smtpHostIp ? { servername: smtpHost } : undefined,
-        connectionTimeout: 15000,
-        greetingTimeout: 15000,
-        socketTimeout: 30000,
-      } satisfies SMTPTransport.Options & { proxy?: string });
+  let transporter: ReturnType<typeof nodemailer.createTransport> | undefined;
+  if (!useResendApi) {
+    const smtpOptions: SMTPTransport.Options & { proxy?: string } = {
+      host: smtpHostIp || smtpHost,
+      port: smtpPort,
+      secure,
+      auth: smtpUser ? { user: smtpUser, pass: smtpPass } : undefined,
+      proxy: proxy || undefined,
+      tls: smtpHostIp ? { servername: smtpHost } : undefined,
+      connectionTimeout: 15000,
+      greetingTimeout: 15000,
+      socketTimeout: 30000,
+    };
+    transporter = nodemailer.createTransport(smtpOptions);
+  }
 
   const submittedAtText = formatSubmittedAt(new Date());
   const adminMessage = buildAdminMessage(formData, files, submittedAtText);
@@ -503,6 +505,7 @@ export const POST: APIRoute = async ({ request }) => {
     if (useResendApi) {
       await sendWithResend(resendApiKey, adminMail);
     } else {
+      if (!transporter) throw new Error("SMTP transport is not initialized.");
       await transporter.sendMail(adminMail);
     }
   } catch (error) {
@@ -528,6 +531,7 @@ export const POST: APIRoute = async ({ request }) => {
     if (useResendApi) {
       await sendWithResend(resendApiKey, receiptMail);
     } else {
+      if (!transporter) throw new Error("SMTP transport is not initialized.");
       await transporter.sendMail(receiptMail);
     }
   } catch (error) {

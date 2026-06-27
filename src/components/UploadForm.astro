@@ -87,12 +87,12 @@ const maxMB = site.forms.maxUploadMB;
     <div class="field field--full">
       <span class="field__label">上传其他材料</span>
       <span class="field__hint">
-        可一并上传：目标期刊模板、author guidelines 文件、图表文件、参考文献文件、补充材料。
+        可一并上传：目标期刊模板、投稿指南文件、图表文件、参考文献文件、补充材料。
       </span>
       <label class="dropzone" id="uf-drop-extra" for="uf-file-extra">
         <div class="dropzone__icon"><Icon name="upload" size={24} /></div>
         <div class="dropzone__title">点击选择或拖放其他材料（选填）</div>
-        <div class="dropzone__hint">模板 / guidelines / 图表 / 参考文献 / 补充材料，可多选</div>
+        <div class="dropzone__hint">模板 / 投稿指南 / 图表 / 参考文献 / 补充材料，可多选</div>
         <input
           id="uf-file-extra"
           type="file"
@@ -120,15 +120,15 @@ const maxMB = site.forms.maxUploadMB;
     </div>
 
     <div class="field">
-      <span class="field__label">是否需要 blinded manuscript</span>
-      <div class="toggle-group" role="radiogroup" aria-label="是否需要 blinded manuscript">
+      <span class="field__label">是否需要匿名稿</span>
+      <div class="toggle-group" role="radiogroup" aria-label="是否需要匿名稿">
         <label><input type="radio" name="need_blinded" value="是" /><span>是</span></label>
         <label><input type="radio" name="need_blinded" value="否" checked /><span>否</span></label>
       </div>
     </div>
     <div class="field">
-      <span class="field__label">是否需要 title page</span>
-      <div class="toggle-group" role="radiogroup" aria-label="是否需要 title page">
+      <span class="field__label">是否需要标题页</span>
+      <div class="toggle-group" role="radiogroup" aria-label="是否需要标题页">
         <label><input type="radio" name="need_titlepage" value="是" /><span>是</span></label>
         <label><input type="radio" name="need_titlepage" value="否" checked /><span>否</span></label>
       </div>

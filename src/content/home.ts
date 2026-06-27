@@ -14,9 +14,9 @@ export const hero = {
 export const sellingPoints: { icon: string; text: string }[] = [
   { icon: "target", text: "专注期刊和会议论文排版" },
   { icon: "file", text: "支持 Word、LaTeX、Overleaf" },
-  { icon: "guidelines", text: "可按目标期刊 author guidelines 排版" },
-  { icon: "anonymous", text: "支持 title page 和 blinded manuscript 整理" },
-  { icon: "pdf", text: "支持期刊文章 PDF production" },
+  { icon: "guidelines", text: "可按目标期刊投稿指南排版" },
+  { icon: "anonymous", text: "支持标题页和匿名稿整理" },
+  { icon: "pdf", text: "支持期刊文章 PDF 出版排版" },
   { icon: "xml", text: "支持 JATS XML 生成" },
   { icon: "lock", text: "文件保密处理" },
 ];
@@ -30,19 +30,19 @@ export const sellingPoints: { icon: string; text: string }[] = [
 export const trustSignals: { title: string; desc: string }[] = [
   {
     title: "专业排版，编辑校对",
-    desc: "Professional, editor-checked formatting：由排版编辑按目标期刊要求逐项整理格式，而非简单套模板。",
+    desc: "由排版编辑按目标期刊要求逐项整理格式，而非简单套模板。",
   },
   {
     title: "文件全程保密",
-    desc: "Confidential file handling：客户文件仅用于本次排版，不公开展示、不用于宣传，除非获得明确授权。",
+    desc: "客户文件仅用于本次排版，不公开展示、不用于宣传，除非获得明确授权。",
   },
   {
     title: "交付快、价格灵活",
-    desc: "Fast turnaround & affordable pricing：个人稿件通常 1–3 个工作日交付，价格按稿件实际情况灵活报价。",
+    desc: "个人稿件通常 1–3 个工作日交付，价格按稿件实际情况灵活报价。",
   },
   {
     title: "边界清晰、诚实可信",
-    desc: "No ghostwriting、no fake references、no data manipulation、no publication guarantees：不代写、不编造参考文献、不修改数据、不承诺录用。",
+    desc: "不代写、不编造参考文献、不修改数据、不承诺录用。",
   },
 ];
 
@@ -70,9 +70,9 @@ export const scope = {
   weDo: [
     "期刊与会议论文投稿格式排版",
     "Word、LaTeX、Overleaf 排版",
-    "按 author guidelines 排版",
-    "title page 与 blinded manuscript 整理",
-    "期刊文章 PDF production",
+    "按投稿指南排版",
+    "标题页与匿名稿整理",
+    "期刊文章 PDF 出版排版",
     "JATS XML 生成 / 转换",
   ],
   weDont: [
