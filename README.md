@@ -54,7 +54,7 @@ npm run check      # 类型检查（可选）
 
 ## 三、表单后端（联系表单 / 文件上传）
 
-上传表单已接入内置接口 `/api/upload`，会通过 SMTP 把表单信息和附件发送到邮箱。请复制 `.env.example` 为 `.env`，或在部署平台里配置同名环境变量：
+联系表单与上传表单已分别接入内置接口 `/api/contact`、`/api/upload`，会通过服务端邮件接口把表单信息和附件发送到邮箱。请复制 `.env.example` 为 `.env`，或在部署平台里配置同名环境变量：
 
 ```bash
 SMTP_HOST=smtp.example.com
@@ -81,7 +81,7 @@ SMTP_FROM="ScholarFormat Studio <sfs@scholarformatstudio.com>"
 UPLOAD_NOTIFY_TO=sfs@scholarformatstudio.com
 ```
 
-设置 `MAIL_PROVIDER=resend` 后，上传接口会优先使用 Resend HTTPS API 发信，以避开部分网络对 SMTP 端口的限制。API key 优先读取 `RESEND_API_KEY`；如果未设置，会复用 `SMTP_PASS`。
+设置 `MAIL_PROVIDER=resend` 后，联系表单和上传接口会优先使用 Resend HTTPS API 发信，以避开部分网络对 SMTP 端口的限制。API key 优先读取 `RESEND_API_KEY`；如果未设置，会复用 `SMTP_PASS`。
 
 使用 Resend 前，请先在 Resend Domains 中添加并验证 `SMTP_FROM` 对应的发件域名，例如 `scholarformatstudio.com`；未验证时 Resend API 会返回 403。
 
@@ -99,7 +99,7 @@ SMTP_PROXY=socks5://127.0.0.1:7891
 
 如果返回 `Your SMTP account is not yet activated`，说明 SMTP Login / SMTP Key 已通过验证，但邮件服务商尚未开通该账号的事务邮件 / SMTP 发信权限。需要在服务商后台开通或联系支持申请激活后，网站才能真正发出邮件。
 
-联系表单目前仍可使用第三方表单服务，或继续保持演示模式回退到 `mailto`。如果需要联系表单也走同一个 SMTP 后端，可仿照 `src/pages/api/upload.ts` 增加 `/api/contact`。
+联系表单默认使用 `/api/contact`，上传表单默认使用 `/api/upload`。如果要将通知发送到不同邮箱，可额外配置 `CONTACT_NOTIFY_TO` 或 `UPLOAD_NOTIFY_TO`。
 
 > 上传大小上限在 `site.forms.maxUploadMB`（默认 50MB），前端会校验；后端也要设置对应限制。
 
@@ -184,12 +184,11 @@ node dist/server/entry.mjs
 
 ---
 
-## 七、英文版（已预留）
+## 七、中英文切换
 
-需求文档要求「中文优先、预留英文」。当前为完整中文版，已做好 i18n 化的内容结构基础：
-文案集中在 `src/content/`，便于后续按 locale 拆分；页头已放「EN 即将上线」标识。
-要做完整英文版时，可引入 [Astro i18n 路由](https://docs.astro.build/en/guides/internationalization/)，
-为内容模块补 `en` 字段并新增 `/en/*` 页面。
+页头已提供中文 / EN 语言切换按钮，切换偏好会保存在浏览器 `localStorage` 中。前台主要页面、导航、表单和页脚文案会跟随切换。
+
+语言切换脚本在 `src/scripts/language-switch.ts`。如新增页面或新增大段文案，请同步补充对应英文文案。
 
 ---
 

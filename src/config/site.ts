@@ -20,11 +20,10 @@ export const site = {
 
   /**
    * 表单提交接收地址（联系表单 / 上传表单）。
-   * 上传表单已接入 /api/upload，通过服务端 SMTP 配置发送邮件。
-   * 联系表单留空时为「演示模式」：不发送，仅前端校验并提示。
+   * 联系表单和上传表单都通过服务端接口发送邮件。
    */
   forms: {
-    contactEndpoint: "", // 例如 "https://formspree.io/f/xxxxxxx"
+    contactEndpoint: "/api/contact",
     uploadEndpoint: "/api/upload",
     maxUploadMB: 50,
     /** 提交成功提示（来自需求文档）。 */

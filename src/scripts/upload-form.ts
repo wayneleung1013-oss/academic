@@ -1,5 +1,7 @@
 /** 上传表单交互：文件选择/拖放预览 + 大小校验 + 提交。 */
 
+import { localized } from "./language-switch";
+
 function setStatus(
   el: HTMLElement,
   type: "success" | "error" | "info",
@@ -68,7 +70,12 @@ function wireDropzone(
     const files = input.files ? Array.from(input.files) : [];
     for (const f of files) {
       if (f.size > maxBytes) {
-        onError(`文件「${f.name}」超过单文件大小上限（${fmtSize(maxBytes)}）。`);
+        onError(
+          localized(
+            `文件「${f.name}」超过单文件大小上限（${fmtSize(maxBytes)}）。`,
+            `File "${f.name}" exceeds the per-file size limit (${fmtSize(maxBytes)}).`
+          )
+        );
       }
       const row = document.createElement("div");
       row.className = "dropzone__file";
@@ -98,7 +105,12 @@ function wireDropzone(
       const dropped = Array.from(dt.files);
       const accepted = filterByAccept(dropped, input.accept);
       if (accepted.length < dropped.length) {
-        onError("部分文件类型不被支持，已忽略。请上传 Word、LaTeX、PDF、图片、模板或压缩包。");
+        onError(
+          localized(
+            "部分文件类型不被支持，已忽略。请上传 Word、LaTeX、PDF、图片、模板或压缩包。",
+            "Some file types are not supported and were ignored. Please upload Word, LaTeX, PDF, images, templates, or archives."
+          )
+        );
       }
       if (accepted.length) {
         const next = new DataTransfer();
@@ -120,7 +132,10 @@ export function initUploadForm(): void {
   const mailto = form.dataset.mailto?.trim() || "";
   const successMsg =
     form.dataset.success?.trim() ||
-    "上传成功！我们已收到你的稿件，会尽快确认并给出报价。";
+    localized(
+      "上传成功！我们已收到你的稿件，会尽快确认并给出报价。",
+      "Upload received. We will review the files and reply with a quote soon."
+    );
   const maxMB = Number(form.dataset.maxMb || "50");
   const maxBytes = maxMB * 1024 * 1024;
 
@@ -137,7 +152,14 @@ export function initUploadForm(): void {
     if (!form.checkValidity()) {
       const firstInvalid = form.querySelector(":invalid") as HTMLElement | null;
       firstInvalid?.focus();
-      setStatus(status, "error", "请检查表单：姓名、邮箱、原始稿件为必填，并需勾选同意隐私政策。");
+      setStatus(
+        status,
+        "error",
+        localized(
+          "请检查表单：姓名、邮箱、原始稿件为必填，并需勾选同意隐私政策。",
+          "Please check the form: name, email, manuscript files, and privacy consent are required."
+        )
+      );
       return;
     }
 
@@ -148,7 +170,14 @@ export function initUploadForm(): void {
     for (const input of allInputs) {
       for (const f of input.files ? Array.from(input.files) : []) {
         if (f.size > maxBytes) {
-          setStatus(status, "error", `文件「${f.name}」超过 ${maxMB}MB 上限，请压缩或拆分后再上传。`);
+          setStatus(
+            status,
+            "error",
+            localized(
+              `文件「${f.name}」超过 ${maxMB}MB 上限，请压缩或拆分后再上传。`,
+              `File "${f.name}" exceeds the ${maxMB}MB limit. Please compress or split it before uploading.`
+            )
+          );
           return;
         }
       }
@@ -156,15 +185,24 @@ export function initUploadForm(): void {
 
     const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
 
-    // 演示模式：未配置上传后端（文件无法通过 mailto 发送）
+    // 未配置上传后端时给出可执行的替代方式（文件无法通过 mailto 自动附带）。
     if (!endpoint) {
       const contactHint = mailto
-        ? `请改用「联系我们」表单提交需求，或将文件发送至 ${mailto}。`
-        : "请改用「联系我们」表单提交需求，文件后端接入后即可在线上传。";
+        ? localized(
+            `请改用「联系我们」表单提交需求，或将文件发送至 ${mailto}。`,
+            `Please use the contact form, or email the files to ${mailto}.`
+          )
+        : localized(
+            "请改用「联系我们」表单提交需求。",
+            "Please use the contact form instead."
+          );
       setStatus(
         status,
         "info",
-        `文件上传后端尚未接入（演示模式），暂无法在线上传文件。${contactHint}`
+        localized(
+          `暂时无法在线上传文件。${contactHint}`,
+          `Online file upload is temporarily unavailable. ${contactHint}`
+        )
       );
       return;
     }
@@ -172,7 +210,7 @@ export function initUploadForm(): void {
     let timeoutId: number | undefined;
     try {
       if (submitBtn) submitBtn.disabled = true;
-      setStatus(status, "info", "正在上传，请勿关闭页面…");
+      setStatus(status, "info", localized("正在上传，请勿关闭页面…", "Uploading. Please keep this page open..."));
       const controller = new AbortController();
       timeoutId = window.setTimeout(() => controller.abort(), uploadTimeoutMs);
       const res = await fetch(endpoint, {
@@ -193,15 +231,24 @@ export function initUploadForm(): void {
       } else {
         const message = await readResponseMessage(
           res,
-          "上传失败，请稍后重试，或通过联系表单 / 邮箱与我们联系。"
+          localized(
+            "上传失败，请稍后重试，或通过联系表单 / 邮箱与我们联系。",
+            "Upload failed. Please try again later or contact us by form/email."
+          )
         );
         setStatus(status, "error", message);
       }
     } catch (error) {
       const message =
         error instanceof DOMException && error.name === "AbortError"
-          ? "上传或邮件发送超时，请检查 SMTP 网络 / Brevo 配置后重试。"
-          : "网络异常，上传未成功。请检查网络后重试。";
+          ? localized(
+              "上传或邮件发送超时，请检查网络或邮件服务配置后重试。",
+              "Upload or email delivery timed out. Please check the network or mail-service configuration and try again."
+            )
+          : localized(
+              "网络异常，上传未成功。请检查网络后重试。",
+              "Network error. Upload was not completed. Please check your connection and try again."
+            );
       setStatus(status, "error", message);
     } finally {
       if (timeoutId !== undefined) window.clearTimeout(timeoutId);
