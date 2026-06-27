@@ -19,11 +19,17 @@ function fmtSize(bytes: number): string {
 }
 
 const uploadTimeoutMs = 120000;
+const duplicateSubmitWindowMs = 1200;
 
-async function readResponseMessage(res: Response, fallback: string): Promise<string> {
-  const contentType = res.headers.get("content-type") || "";
-  const text = await res.text();
+type UploadResult = {
+  ok: boolean;
+  status: number;
+  message: string;
+};
 
+function readXhrMessage(xhr: XMLHttpRequest, fallback: string): string {
+  const contentType = xhr.getResponseHeader("content-type") || "";
+  const text = xhr.responseText || "";
   if (text) {
     try {
       const data = JSON.parse(text) as { message?: unknown };
@@ -37,10 +43,79 @@ async function readResponseMessage(res: Response, fallback: string): Promise<str
     }
   }
 
-  if (!res.ok) {
-    return `${fallback}（HTTP ${res.status}）`;
+  if (xhr.status < 200 || xhr.status >= 300) {
+    return `${fallback}（HTTP ${xhr.status}）`;
   }
   return fallback;
+}
+
+function setProgress(
+  progress: HTMLElement,
+  bar: HTMLElement,
+  percentEl: HTMLElement,
+  labelEl: HTMLElement,
+  percent: number,
+  label: string,
+  processing = false
+): void {
+  const next = Math.max(0, Math.min(100, Math.round(percent)));
+  progress.hidden = false;
+  progress.classList.toggle("upload-progress--processing", processing);
+  progress.setAttribute("aria-valuenow", String(next));
+  bar.style.width = `${next}%`;
+  percentEl.textContent = processing ? localized("处理中", "Processing") : `${next}%`;
+  labelEl.textContent = label;
+}
+
+function resetProgress(
+  progress: HTMLElement,
+  bar: HTMLElement,
+  percentEl: HTMLElement,
+  labelEl: HTMLElement
+): void {
+  progress.hidden = true;
+  progress.classList.remove("upload-progress--processing");
+  progress.setAttribute("aria-valuenow", "0");
+  bar.style.width = "0%";
+  percentEl.textContent = "0%";
+  labelEl.textContent = localized("准备上传…", "Preparing upload...");
+}
+
+function submitFormData(
+  endpoint: string,
+  data: FormData,
+  onProgress: (percent: number) => void,
+  onServerProcessing: () => void,
+  fallbackError: string
+): Promise<UploadResult> {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", endpoint);
+    xhr.timeout = uploadTimeoutMs;
+    xhr.setRequestHeader("Accept", "application/json");
+
+    xhr.upload.addEventListener("progress", (event) => {
+      if (!event.lengthComputable || event.total <= 0) {
+        onProgress(35);
+        return;
+      }
+      // Reserve the last 10% for server-side email processing after upload completes.
+      onProgress(Math.min(90, (event.loaded / event.total) * 90));
+    });
+    xhr.upload.addEventListener("load", onServerProcessing);
+
+    xhr.addEventListener("load", () => {
+      resolve({
+        ok: xhr.status >= 200 && xhr.status < 300,
+        status: xhr.status,
+        message: readXhrMessage(xhr, fallbackError),
+      });
+    });
+    xhr.addEventListener("error", () => reject(new Error("network")));
+    xhr.addEventListener("timeout", () => reject(new Error("timeout")));
+    xhr.addEventListener("abort", () => reject(new Error("abort")));
+    xhr.send(data);
+  });
 }
 
 /** 按 input 的 accept（扩展名列表）过滤文件，挡掉拖放绕过类型限制的情况。 */
@@ -127,6 +202,11 @@ export function initUploadForm(): void {
   if (!form) return;
   const status = document.getElementById("uf-status") as HTMLElement | null;
   if (!status) return;
+  const progress = document.getElementById("uf-progress") as HTMLElement | null;
+  const progressBar = document.getElementById("uf-progress-bar") as HTMLElement | null;
+  const progressPercent = document.getElementById("uf-progress-percent") as HTMLElement | null;
+  const progressLabel = document.getElementById("uf-progress-label") as HTMLElement | null;
+  if (!progress || !progressBar || !progressPercent || !progressLabel) return;
 
   const endpoint = form.dataset.endpoint?.trim() || "";
   const mailto = form.dataset.mailto?.trim() || "";
@@ -146,8 +226,32 @@ export function initUploadForm(): void {
     setStatus(status, "error", m)
   );
 
+  let isSubmitting = false;
+  let lastSubmitAt = 0;
+  window.addEventListener("beforeunload", (event) => {
+    if (!isSubmitting) return;
+    event.preventDefault();
+    event.returnValue = localized(
+      "文件仍在上传或邮件仍在发送，离开页面可能导致提交中断。",
+      "Files are still uploading or email is still being sent. Leaving may interrupt the submission."
+    );
+  });
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+    const now = Date.now();
+
+    if (isSubmitting || now - lastSubmitAt < duplicateSubmitWindowMs) {
+      setStatus(
+        status,
+        "info",
+        localized(
+          "正在处理上一次提交，请勿重复点击。",
+          "The previous submission is still being processed. Please do not submit again."
+        )
+      );
+      return;
+    }
 
     if (!form.checkValidity()) {
       const firstInvalid = form.querySelector(":invalid") as HTMLElement | null;
@@ -162,6 +266,7 @@ export function initUploadForm(): void {
       );
       return;
     }
+    lastSubmitAt = now;
 
     // 文件大小校验
     const allInputs = ["uf-file-main", "uf-file-extra"]
@@ -207,40 +312,88 @@ export function initUploadForm(): void {
       return;
     }
 
-    let timeoutId: number | undefined;
     try {
+      isSubmitting = true;
+      form.classList.add("form--submitting");
       if (submitBtn) submitBtn.disabled = true;
-      setStatus(status, "info", localized("正在上传，请勿关闭页面…", "Uploading. Please keep this page open..."));
-      const controller = new AbortController();
-      timeoutId = window.setTimeout(() => controller.abort(), uploadTimeoutMs);
-      const res = await fetch(endpoint, {
-        method: "POST",
-        body: new FormData(form),
-        signal: controller.signal,
-      });
-      window.clearTimeout(timeoutId);
-      timeoutId = undefined;
-      if (res.ok) {
-        const message = await readResponseMessage(res, successMsg);
+      const formData = new FormData(form);
+      setProgress(
+        progress,
+        progressBar,
+        progressPercent,
+        progressLabel,
+        2,
+        localized("正在准备上传…", "Preparing upload...")
+      );
+      setStatus(
+        status,
+        "info",
+        localized("正在上传，请勿关闭页面…", "Uploading. Please keep this page open...")
+      );
+
+      const result = await submitFormData(
+        endpoint,
+        formData,
+        (percent) =>
+          setProgress(
+            progress,
+            progressBar,
+            progressPercent,
+            progressLabel,
+            percent,
+            localized("正在上传文件…", "Uploading files...")
+          ),
+        () =>
+          setProgress(
+            progress,
+            progressBar,
+            progressPercent,
+            progressLabel,
+            92,
+            localized("文件已上传，正在发送邮件并确认提交…", "Files uploaded. Sending email and confirming submission..."),
+            true
+          ),
+        localized(
+          "上传失败，请稍后重试，或通过联系表单 / 邮箱与我们联系。",
+          "Upload failed. Please try again later or contact us by form/email."
+        )
+      );
+
+      setProgress(
+        progress,
+        progressBar,
+        progressPercent,
+        progressLabel,
+        result.ok ? 100 : 90,
+        result.ok
+          ? localized("提交完成", "Submission complete")
+          : localized("服务器返回错误", "Server returned an error"),
+        !result.ok
+      );
+
+      if (result.ok) {
+        const message = result.message || successMsg;
         form.reset();
         const mainList = document.getElementById("uf-files-main");
         const extraList = document.getElementById("uf-files-extra");
         if (mainList) mainList.innerHTML = "";
         if (extraList) extraList.innerHTML = "";
         setStatus(status, "success", message);
+        window.setTimeout(() => resetProgress(progress, progressBar, progressPercent, progressLabel), 1600);
       } else {
-        const message = await readResponseMessage(
-          res,
-          localized(
-            "上传失败，请稍后重试，或通过联系表单 / 邮箱与我们联系。",
-            "Upload failed. Please try again later or contact us by form/email."
-          )
-        );
-        setStatus(status, "error", message);
+        setStatus(status, "error", result.message);
       }
     } catch (error) {
+      setProgress(
+        progress,
+        progressBar,
+        progressPercent,
+        progressLabel,
+        90,
+        localized("提交未完成", "Submission incomplete")
+      );
       const message =
-        error instanceof DOMException && error.name === "AbortError"
+        error instanceof Error && error.message === "timeout"
           ? localized(
               "上传或邮件发送超时，请检查网络或邮件服务配置后重试。",
               "Upload or email delivery timed out. Please check the network or mail-service configuration and try again."
@@ -251,7 +404,8 @@ export function initUploadForm(): void {
             );
       setStatus(status, "error", message);
     } finally {
-      if (timeoutId !== undefined) window.clearTimeout(timeoutId);
+      isSubmitting = false;
+      form.classList.remove("form--submitting");
       if (submitBtn) submitBtn.disabled = false;
     }
   });
