@@ -13,6 +13,30 @@ export default defineConfig({
   devToolbar: {
     enabled: false,
   },
+  security: {
+    allowedDomains: [
+      {
+        protocol: "https",
+        hostname: "scholarformatstudio.com",
+        port: "443",
+      },
+      {
+        protocol: "https",
+        hostname: "www.scholarformatstudio.com",
+        port: "443",
+      },
+      {
+        protocol: "http",
+        hostname: "127.0.0.1",
+        port: "4321",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "4321",
+      },
+    ],
+  },
   // Server output is required for /api/upload mail delivery.
   output: "server",
   adapter: node({
