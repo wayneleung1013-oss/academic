@@ -1,0 +1,104 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Section from "../components/Section.astro";
+---
+
+<BaseLayout
+  title="保密与学术伦理"
+  description="ScholarFormat Studio 将稿件保密和学术伦理作为服务的基本原则：稿件仅用于本次排版服务，不公开、不出售、不转让。"
+>
+  <PageHeader
+    eyebrow="Confidentiality & Ethics"
+    title="保密与学术伦理"
+    titleEn="Confidentiality & Academic Ethics"
+  />
+
+  <Section narrow>
+    <div class="prose prose--compact">
+      <p>
+        ScholarFormat Studio 理解学术稿件可能包含未公开的研究想法、数据、图表、实验结果和技术内容。因此，我们将稿件保密和学术伦理作为服务的基本原则。
+      </p>
+
+      <h2>1. 稿件保密</h2>
+      <p>我们承诺：</p>
+      <ul>
+        <li>客户稿件仅用于本次排版、格式整理、PDF production 或 JATS XML 生成服务；</li>
+        <li>不公开、不出售、不转让客户稿件；</li>
+        <li>未经客户明确授权，不将稿件用于案例展示或宣传材料；</li>
+        <li>尽合理努力限制文件访问范围；</li>
+        <li>客户可要求删除已提交的稿件文件。</li>
+      </ul>
+
+      <h2>2. 文件处理不改变保密义务</h2>
+      <p>
+        我们可能在服务过程中使用人工处理、自动化工具、机器辅助技术、第三方技术服务和内部工作流程处理客户文件，但这不改变我们对客户稿件的保密义务。
+      </p>
+      <p>
+        除非获得客户明确授权，我们不会公开、出售、转让客户稿件，也不会将客户稿件用于未经授权的案例展示或营销宣传。
+      </p>
+
+      <h2>3. 客户特殊限制</h2>
+      <p>
+        如果客户稿件涉及高度敏感信息、未公开专利内容、临床数据、商业秘密或机构保密要求，客户应在提交文件前明确说明。
+      </p>
+      <p>客户可以提出特殊处理要求，包括但不限于：</p>
+      <ul>
+        <li>不使用特定第三方工具；</li>
+        <li>限制文件处理方式；</li>
+        <li>项目完成后删除文件；</li>
+        <li>签署单独保密协议。</li>
+      </ul>
+      <p>我们会根据项目要求、技术可行性和服务成本决定是否接受该项目，并可相应调整报价和交付时间。</p>
+
+      <h2>4. 案例展示规则</h2>
+      <p>
+        网站案例优先使用模拟稿、公开模板或脱敏文件。未经客户明确授权，不展示真实客户稿件。
+      </p>
+
+      <h2>5. 学术伦理边界</h2>
+      <p>
+        ScholarFormat Studio 只提供格式、排版、文件整理、PDF production 和 JATS XML 生成服务。
+      </p>
+      <p>我们不提供：</p>
+      <ul>
+        <li>论文代写；</li>
+        <li>学术内容改写；</li>
+        <li>编造数据；</li>
+        <li>修改研究结果；</li>
+        <li>伪造图片；</li>
+        <li>虚假引用；</li>
+        <li>买卖论文；</li>
+        <li>代替作者投稿；</li>
+        <li>冒充作者身份；</li>
+        <li>承诺录用或包发表。</li>
+      </ul>
+
+      <h2>6. 作者责任</h2>
+      <p>
+        客户应对稿件内容、数据真实性、作者署名、伦理声明、利益冲突声明、基金信息、参考文献真实性和目标期刊政策符合性负责。
+      </p>
+      <p>我们的服务仅限于格式、排版、文件整理和 XML 处理，不代表对学术内容进行验证或背书。</p>
+
+      <h2>7. 保密协议</h2>
+      <p>如客户、期刊、会议或机构需要签署单独的保密协议，可在提交稿件前提出。</p>
+
+      <h2>8. 联系方式</h2>
+      <p>如您对稿件保密、文件删除、案例授权或学术伦理边界有任何问题，请联系：</p>
+      <p>邮箱：<a href="mailto:sfs@scholarformatstudio.com">sfs@scholarformatstudio.com</a></p>
+
+      <p class="back-home">
+        <a href="/">← 返回首页</a>
+      </p>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .back-home {
+    margin-top: var(--space-7);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--color-line);
+    font-size: var(--text-sm);
+  }
+</style>

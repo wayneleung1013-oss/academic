@@ -1,0 +1,71 @@
+---
+import Button from "./Button.astro";
+
+/** 底部行动号召条。 */
+export interface Props {
+  title?: string;
+  desc?: string;
+  primaryLabel?: string;
+  primaryHref?: string;
+}
+const {
+  title = "准备好开始了吗？",
+  desc = "提交稿件信息或直接上传文件，我们会尽快确认服务范围并给出报价。",
+  primaryLabel = "获取报价",
+  primaryHref = "/contact",
+} = Astro.props;
+---
+
+<section class="cta-banner">
+  <div class="container cta-banner__inner">
+    <div class="cta-banner__text">
+      <h2>{title}</h2>
+      <p>{desc}</p>
+    </div>
+    <div class="cta-banner__actions">
+      <Button href={primaryHref} variant="white" size="lg" icon="arrowRight">{primaryLabel}</Button>
+      <Button href="/upload" variant="ghost" size="lg" icon="upload" iconPosition="left"
+        class="cta-banner__upload">上传稿件</Button
+      >
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-banner {
+    background:
+      radial-gradient(120% 140% at 0% 0%, #2a5fa6 0%, transparent 55%),
+      linear-gradient(135deg, var(--color-primary-strong), var(--color-primary));
+    color: #fff;
+  }
+  .cta-banner__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem 2rem;
+    padding-block: clamp(2.5rem, 1.5rem + 4vw, 4rem);
+  }
+  .cta-banner__text h2 {
+    color: #fff;
+    font-size: var(--text-2xl);
+  }
+  .cta-banner__text p {
+    color: rgba(255, 255, 255, 0.82);
+    margin-top: 0.5rem;
+    max-width: 48ch;
+  }
+  .cta-banner__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .cta-banner__upload {
+    color: #fff;
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+  }
+  .cta-banner__upload:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+  }
+</style>

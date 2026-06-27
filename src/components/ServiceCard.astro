@@ -1,0 +1,91 @@
+---
+import Icon from "./Icon.astro";
+import Badge from "./Badge.astro";
+
+/** 首页服务概览卡片（紧凑版）。 */
+export interface Props {
+  icon: string;
+  title: string;
+  desc: string;
+  price: string;
+  href: string;
+  ctaLabel?: string;
+}
+const { icon, title, desc, price, href, ctaLabel = "查看详情" } = Astro.props;
+---
+
+<a class="service-card" href={href}>
+  <span class="service-card__icon" aria-hidden="true">
+    <Icon name={icon} size={24} />
+  </span>
+  <h3 class="service-card__title">{title}</h3>
+  <p class="service-card__desc">{desc}</p>
+  <div class="service-card__footer">
+    <Badge variant="primary">{price}</Badge>
+    <span class="service-card__link">
+      {ctaLabel} <Icon name="arrowRight" size={16} />
+    </span>
+  </div>
+</a>
+
+<style>
+  .service-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    padding: 1.6rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xs);
+    color: inherit;
+    transition:
+      transform var(--transition),
+      box-shadow var(--transition),
+      border-color var(--transition);
+    height: 100%;
+  }
+  .service-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-primary-soft);
+    color: inherit;
+  }
+  .service-card__icon {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border-radius: var(--radius-md);
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+  }
+  .service-card__title {
+    font-size: var(--text-lg);
+    color: var(--color-ink);
+  }
+  .service-card__desc {
+    color: var(--color-muted);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    flex: 1;
+  }
+  .service-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: 0.4rem;
+  }
+  .service-card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    color: var(--color-primary);
+  }
+  .service-card:hover .service-card__link {
+    gap: 0.5rem;
+  }
+</style>

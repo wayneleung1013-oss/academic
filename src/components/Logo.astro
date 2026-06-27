@@ -1,0 +1,71 @@
+---
+import { site } from "../config/site";
+
+/** 文字 Logo（需求文档：暂用文字 Logo: ScholarFormat Studio）。 */
+export interface Props {
+  variant?: "default" | "invert";
+  withTagline?: boolean;
+}
+const { variant = "default", withTagline = false } = Astro.props;
+---
+
+<a href="/" class={`logo logo--${variant}`} aria-label={`${site.brand} 首页`}>
+  <span class="logo__mark" aria-hidden="true">
+    <svg viewBox="0 0 32 32" width="32" height="32" fill="none">
+      <rect x="1" y="1" width="30" height="30" rx="8" fill="currentColor" opacity="0.1"></rect>
+      <path
+        d="M9 22.5V9.5h6.2c2.6 0 4.3 1.4 4.3 3.7 0 1.6-.9 2.8-2.4 3.3l3 6h-2.9l-2.6-5.4h-3.1v5.4z"
+        fill="currentColor"></path>
+      <path d="M22.5 9.5h2.6v9.6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+      ></path>
+    </svg>
+  </span>
+  <span class="logo__text">
+    <span class="logo__name">{site.brand}</span>
+    {withTagline && <span class="logo__tagline">{site.brandZh}</span>}
+  </span>
+</a>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--color-primary);
+    font-weight: var(--weight-bold);
+  }
+  .logo:hover {
+    color: var(--color-primary);
+  }
+  .logo__mark {
+    display: grid;
+    place-items: center;
+    color: var(--color-primary);
+  }
+  .logo__text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+  .logo__name {
+    font-size: var(--text-md);
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+  }
+  .logo__tagline {
+    font-size: var(--text-xs);
+    font-weight: var(--weight-medium);
+    color: var(--color-muted);
+  }
+
+  .logo--invert {
+    color: #fff;
+  }
+  .logo--invert .logo__mark,
+  .logo--invert .logo__name {
+    color: #fff;
+  }
+  .logo--invert .logo__tagline {
+    color: rgba(255, 255, 255, 0.7);
+  }
+</style>

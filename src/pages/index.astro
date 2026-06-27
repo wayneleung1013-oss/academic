@@ -1,0 +1,470 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Section from "../components/Section.astro";
+import Button from "../components/Button.astro";
+import Icon from "../components/Icon.astro";
+import Badge from "../components/Badge.astro";
+import ServiceCard from "../components/ServiceCard.astro";
+import FaqAccordion from "../components/FaqAccordion.astro";
+import CTABanner from "../components/CTABanner.astro";
+import { hero, sellingPoints, trustSignals, steps, scope } from "../content/home";
+import { homeServiceOverview, services } from "../content/services";
+import { faqs } from "../content/faq";
+
+// 服务图标映射（首页概览卡用）
+const iconById = Object.fromEntries(services.map((s) => [s.id, s.icon]));
+const homeFaqs = faqs.slice(0, 6);
+---
+
+<BaseLayout title={hero.title} full={false}>
+  <!-- ============ Hero ============ -->
+  <section class="hero">
+    <div class="container hero__inner">
+      <div class="hero__content">
+        <Badge variant="primary">{hero.eyebrow}</Badge>
+        <h1 class="hero__title">{hero.title}</h1>
+        <p class="hero__title-en">{hero.titleEn}</p>
+        <p class="hero__subtitle">{hero.subtitle}</p>
+        <div class="hero__actions">
+          <Button href={hero.primaryCta.href} size="lg" icon="arrowRight"
+            >{hero.primaryCta.label}</Button
+          >
+          <Button href={hero.secondaryCta.href} variant="secondary" size="lg" icon="upload"
+            iconPosition="left">{hero.secondaryCta.label}</Button
+          >
+        </div>
+        <ul class="hero__trust">
+          <li><Icon name="lock" size={16} /> 文件保密处理</li>
+          <li><Icon name="clock" size={16} /> 通常 1–3 个工作日</li>
+        </ul>
+      </div>
+
+      <div
+        class="hero__visual"
+        role="img"
+        aria-label="Word, PDF, and LaTeX files go through ScholarFormat Studio Formatting to produce a journal-ready manuscript, with optional JATS XML output."
+      >
+        <img src="/hero-flow.svg" alt="" loading="eager" decoding="async" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 核心卖点 ============ -->
+  <section class="points">
+    <div class="container">
+      <ul class="points__grid">
+        {
+          sellingPoints.map((p) => (
+            <li class="point">
+              <span class="point__icon" aria-hidden="true">
+                <Icon name={p.icon} size={20} />
+              </span>
+              <span>{p.text}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ 服务概览 ============ -->
+  <Section
+    variant="subtle"
+    eyebrow="服务概览"
+    title="覆盖从个人投稿到期刊出版的排版需求"
+    lead="无论是单篇期刊投稿，还是杂志社、会议的批量排版与 XML 生成，都能找到对应服务。"
+    align="center"
+  >
+    <div class="services-grid">
+      {
+        homeServiceOverview.map((s) => (
+          <ServiceCard
+            icon={iconById[s.id] ?? "format"}
+            title={s.title}
+            desc={s.desc}
+            price={s.price}
+            href={s.cta.href}
+            ctaLabel={s.cta.label}
+          />
+        ))
+      }
+      <a class="services-grid__more" href="/services">
+        <span class="services-grid__more-icon"><Icon name="arrowRight" size={22} /></span>
+        <span class="services-grid__more-title">查看全部 6 项服务</span>
+        <span class="services-grid__more-desc">含期刊文章出版排版等机构服务</span>
+      </a>
+    </div>
+  </Section>
+
+  <!-- ============ 提交流程 ============ -->
+  <Section
+    eyebrow="如何开始"
+    title="三步获取报价并交付"
+    lead="流程清晰、边界明确，先确认服务范围与报价，再开始排版。"
+    align="center"
+  >
+    <ol class="steps">
+      {
+        steps.map((s) => (
+          <li class="step">
+            <span class="step__num">{s.step}</span>
+            <h3 class="step__title">{s.title}</h3>
+            <p class="step__desc">{s.desc}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </Section>
+
+  <!-- ============ 为什么可信 ============ -->
+  <Section
+    variant="subtle"
+    eyebrow="为什么可信"
+    title="专业、保密、边界清晰"
+    align="center"
+  >
+    <div class="trust-grid">
+      {
+        trustSignals.map((t) => (
+          <div class="trust-card">
+            <h3 class="trust-card__title">{t.title}</h3>
+            <p class="trust-card__desc">{t.desc}</p>
+          </div>
+        ))
+      }
+    </div>
+  </Section>
+
+  <!-- ============ 我们做 / 不做 ============ -->
+  <Section eyebrow="服务边界" title="我们做什么，不做什么" align="center">
+    <div class="scope">
+      <div class="scope__col scope__col--do">
+        <h3><Icon name="check" size={20} /> 我们提供</h3>
+        <ul>
+          {scope.weDo.map((x) => <li>{x}</li>)}
+        </ul>
+      </div>
+      <div class="scope__col scope__col--dont">
+        <h3><Icon name="x" size={20} /> 我们不提供</h3>
+        <ul>
+          {scope.weDont.map((x) => <li>{x}</li>)}
+        </ul>
+      </div>
+    </div>
+  </Section>
+
+  <!-- ============ FAQ 摘选 ============ -->
+  <Section variant="subtle" eyebrow="常见问题" title="投稿排版常见问题" align="center" narrow>
+    <FaqAccordion items={homeFaqs} />
+    <div class="faq-more">
+      <Button href="/faq" variant="secondary" icon="arrowRight">查看全部常见问题</Button>
+    </div>
+  </Section>
+
+  <CTABanner
+    title="准备整理您的投稿文件？"
+    desc="请提交稿件基本信息、目标期刊或会议要求和期望交付时间，我们将根据稿件复杂度提供报价。"
+    primaryLabel="提交需求，获取报价"
+  />
+</BaseLayout>
+
+<style>
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    background:
+      radial-gradient(110% 120% at 85% -10%, var(--color-primary-soft) 0%, transparent 50%),
+      linear-gradient(180deg, #fbfcfe 0%, #ffffff 100%);
+    overflow: hidden;
+  }
+  .hero__inner {
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: clamp(2rem, 1rem + 4vw, 4rem);
+    align-items: center;
+    padding-block: clamp(3rem, 2rem + 5vw, 6rem);
+  }
+  .hero__title {
+    font-size: var(--text-hero);
+    margin-top: 1rem;
+    line-height: 1.1;
+  }
+  .hero__title-en {
+    font-family: var(--font-serif);
+    font-size: var(--text-lg);
+    color: var(--color-primary);
+    margin-top: 0.6rem;
+    font-style: italic;
+  }
+  .hero__subtitle {
+    margin-top: 1.2rem;
+    font-size: var(--text-lg);
+    color: var(--color-ink-2);
+    line-height: var(--leading-relaxed);
+    max-width: 52ch;
+  }
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 1.8rem;
+  }
+  .hero__trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    margin-top: 1.8rem;
+    color: var(--color-muted);
+    font-size: var(--text-sm);
+  }
+  .hero__trust li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .hero__trust :global(.icon) {
+    color: var(--color-primary);
+  }
+
+  /* Hero 流程图 */
+  .hero__visual {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 430px;
+  }
+  .hero__visual img {
+    width: 100%;
+    display: block;
+    max-width: 650px;
+    height: auto;
+  }
+
+  @media (max-width: 880px) {
+    .hero__inner {
+      grid-template-columns: 1fr;
+    }
+    .hero__visual {
+      display: none;
+    }
+  }
+
+  /* ---------- 核心卖点 ---------- */
+  .points {
+    border-bottom: 1px solid var(--color-line);
+    padding-block: clamp(2rem, 1rem + 3vw, 3rem);
+  }
+  .points__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem 1.5rem;
+  }
+  .point {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-ink-2);
+  }
+  .point__icon {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: var(--radius-md);
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+    flex-shrink: 0;
+  }
+  @media (max-width: 880px) {
+    .points__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 480px) {
+    .points__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ---------- 服务网格 ---------- */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+  .services-grid__more {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.6rem;
+    border: 1.5px dashed var(--color-line-strong);
+    border-radius: var(--radius-lg);
+    background: transparent;
+    transition:
+      border-color var(--transition),
+      background-color var(--transition);
+  }
+  .services-grid__more:hover {
+    border-color: var(--color-primary);
+    background: var(--color-primary-soft);
+  }
+  .services-grid__more-icon {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border-radius: var(--radius-md);
+    background: var(--color-primary);
+    color: #fff;
+  }
+  .services-grid__more-title {
+    font-weight: var(--weight-semibold);
+    font-size: var(--text-md);
+    color: var(--color-ink);
+  }
+  .services-grid__more-desc {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+  }
+  @media (max-width: 900px) {
+    .services-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 560px) {
+    .services-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ---------- 流程 ---------- */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    counter-reset: step;
+  }
+  .step {
+    position: relative;
+    padding: 1.8rem 1.5rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+  }
+  .step__num {
+    font-family: var(--font-serif);
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--color-primary-soft);
+    line-height: 1;
+  }
+  .step__title {
+    font-size: var(--text-lg);
+    margin-top: 0.6rem;
+  }
+  .step__desc {
+    margin-top: 0.5rem;
+    color: var(--color-muted);
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+  }
+  @media (max-width: 760px) {
+    .steps {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ---------- 信任 ---------- */
+  .trust-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+  .trust-card {
+    padding: 1.6rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    border-left: 3px solid var(--color-primary);
+  }
+  .trust-card__title {
+    font-size: var(--text-lg);
+  }
+  .trust-card__desc {
+    margin-top: 0.5rem;
+    color: var(--color-muted);
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+  }
+  @media (max-width: 700px) {
+    .trust-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ---------- 做 / 不做 ---------- */
+  .scope {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+  .scope__col {
+    padding: 1.8rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-line);
+  }
+  .scope__col--do {
+    background: var(--color-success-soft);
+    border-color: color-mix(in srgb, var(--color-success) 22%, transparent);
+  }
+  .scope__col--dont {
+    background: var(--color-bg-subtle);
+  }
+  .scope__col h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--text-md);
+    margin-bottom: 1rem;
+  }
+  .scope__col--do h3 {
+    color: var(--color-success);
+  }
+  .scope__col--dont h3 {
+    color: var(--color-muted);
+  }
+  .scope__col ul {
+    display: grid;
+    gap: 0.6rem;
+  }
+  .scope__col li {
+    position: relative;
+    padding-left: 1.1rem;
+    font-size: var(--text-sm);
+    color: var(--color-ink-2);
+  }
+  .scope__col li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.5;
+  }
+  @media (max-width: 700px) {
+    .scope {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .faq-more {
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+</style>

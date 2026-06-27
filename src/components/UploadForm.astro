@@ -1,0 +1,187 @@
+---
+import "../styles/forms.css";
+import Button from "./Button.astro";
+import Icon from "./Icon.astro";
+import { site } from "../config/site";
+import { manuscriptTypes, uploadAccept } from "../content/forms";
+
+const endpoint = site.forms.uploadEndpoint;
+const mailto = site.contact.email;
+const maxMB = site.forms.maxUploadMB;
+---
+
+<form
+  class="form"
+  id="upload-form"
+  data-endpoint={endpoint}
+  data-mailto={mailto}
+  data-max-mb={maxMB}
+  data-success={site.forms.uploadSuccess}
+  enctype="multipart/form-data"
+  novalidate
+>
+  <div class="form__grid">
+    <div class="field">
+      <label class="field__label" for="uf-name">姓名 <span class="field__req">*</span></label>
+      <input class="input" id="uf-name" name="name" type="text" required placeholder="您的称呼" />
+    </div>
+    <div class="field">
+      <label class="field__label" for="uf-email">邮箱 <span class="field__req">*</span></label>
+      <input
+        class="input"
+        id="uf-email"
+        name="email"
+        type="email"
+        required
+        placeholder="name@example.com"
+      />
+    </div>
+
+    <div class="field field--full">
+      <label class="field__label" for="uf-contact">微信 / WhatsApp</label>
+      <input
+        class="input"
+        id="uf-contact"
+        name="wechat_whatsapp"
+        type="text"
+        placeholder="微信号或 WhatsApp 号码（选填）"
+      />
+    </div>
+
+    <div class="field field--full">
+      <span class="field__label">稿件类型</span>
+      <div class="options" role="radiogroup" aria-label="稿件类型">
+        {
+          manuscriptTypes.map((t, i) => (
+            <label class="option">
+              <input type="radio" name="manuscript_type" value={t} checked={i === 0} />
+              <span class="option__chip">{t}</span>
+            </label>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- 主稿件上传 -->
+    <div class="field field--full">
+      <span class="field__label">上传原始稿件 <span class="field__req">*</span></span>
+      <label class="dropzone" id="uf-drop-main" for="uf-file-main">
+        <div class="dropzone__icon"><Icon name="upload" size={28} /></div>
+        <div class="dropzone__title">点击选择或拖放文件到此处</div>
+        <div class="dropzone__hint">
+          支持 Word、LaTeX、PDF、图片、模板或压缩包，单文件 ≤ {maxMB}MB，可多选
+        </div>
+        <input
+          id="uf-file-main"
+          type="file"
+          name="manuscript"
+          multiple
+          accept={uploadAccept}
+          required
+        />
+        <div class="dropzone__files" id="uf-files-main"></div>
+      </label>
+    </div>
+
+    <!-- 其他材料上传 -->
+    <div class="field field--full">
+      <span class="field__label">上传其他材料</span>
+      <span class="field__hint">
+        可一并上传：目标期刊模板、author guidelines 文件、图表文件、参考文献文件、补充材料。
+      </span>
+      <label class="dropzone" id="uf-drop-extra" for="uf-file-extra">
+        <div class="dropzone__icon"><Icon name="upload" size={24} /></div>
+        <div class="dropzone__title">点击选择或拖放其他材料（选填）</div>
+        <div class="dropzone__hint">模板 / guidelines / 图表 / 参考文献 / 补充材料，可多选</div>
+        <input
+          id="uf-file-extra"
+          type="file"
+          name="materials"
+          multiple
+          accept={uploadAccept}
+        />
+        <div class="dropzone__files" id="uf-files-extra"></div>
+      </label>
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="uf-journal">目标期刊 / 会议名称</label>
+      <input
+        class="input"
+        id="uf-journal"
+        name="target_journal"
+        type="text"
+        placeholder="如 IEEE Access、某会议名称"
+      />
+    </div>
+    <div class="field">
+      <label class="field__label" for="uf-url">目标期刊 / 会议链接</label>
+      <input class="input" id="uf-url" name="target_url" type="url" placeholder="https://..." />
+    </div>
+
+    <div class="field">
+      <span class="field__label">是否需要 blinded manuscript</span>
+      <div class="toggle-group" role="radiogroup" aria-label="是否需要 blinded manuscript">
+        <label><input type="radio" name="need_blinded" value="是" /><span>是</span></label>
+        <label><input type="radio" name="need_blinded" value="否" checked /><span>否</span></label>
+      </div>
+    </div>
+    <div class="field">
+      <span class="field__label">是否需要 title page</span>
+      <div class="toggle-group" role="radiogroup" aria-label="是否需要 title page">
+        <label><input type="radio" name="need_titlepage" value="是" /><span>是</span></label>
+        <label><input type="radio" name="need_titlepage" value="否" checked /><span>否</span></label>
+      </div>
+    </div>
+    <div class="field">
+      <span class="field__label">是否需要 JATS XML</span>
+      <div class="toggle-group" role="radiogroup" aria-label="是否需要 JATS XML">
+        <label><input type="radio" name="need_xml" value="是" /><span>是</span></label>
+        <label><input type="radio" name="need_xml" value="否" checked /><span>否</span></label>
+      </div>
+    </div>
+    <div class="field">
+      <span class="field__label">是否加急</span>
+      <div class="toggle-group" role="radiogroup" aria-label="是否加急">
+        <label><input type="radio" name="rush" value="是" /><span>是</span></label>
+        <label><input type="radio" name="rush" value="否" checked /><span>否</span></label>
+      </div>
+    </div>
+
+    <div class="field field--full">
+      <label class="field__label" for="uf-deadline">期望交付时间</label>
+      <input
+        class="input"
+        id="uf-deadline"
+        name="deadline"
+        type="text"
+        placeholder="如 3 个工作日 / 某月某日前"
+      />
+    </div>
+
+    <div class="field field--full">
+      <label class="field__label" for="uf-notes">特殊说明</label>
+      <textarea
+        class="textarea"
+        id="uf-notes"
+        name="notes"
+        placeholder="补充任何特殊要求，如目标格式、命名规范、保密要求等。"></textarea>
+    </div>
+  </div>
+
+  <div class="form__footer">
+    <label class="form__consent">
+      <input type="checkbox" id="uf-consent" name="consent" required />
+      <span>我已阅读并同意 <a href="/privacy">隐私政策</a>，文件仅用于本次排版服务，不会公开或用于其他用途。</span>
+    </label>
+    <div class="form__status" id="uf-status" role="status" aria-live="polite"></div>
+    <div>
+      <Button type="submit" size="lg" icon="upload" iconPosition="left">上传文件并获取报价</Button>
+    </div>
+  </div>
+</form>
+
+<script>
+  import { initUploadForm } from "../scripts/upload-form";
+  initUploadForm();
+</script>

@@ -1,0 +1,214 @@
+---
+import Logo from "./Logo.astro";
+import Button from "./Button.astro";
+import Icon from "./Icon.astro";
+import { mainNav } from "../content/nav";
+
+const path = Astro.url.pathname.replace(/\/+$/, "") || "/";
+const isActive = (href: string) => {
+  const clean = href.replace(/\/+$/, "") || "/";
+  return clean === "/" ? path === "/" : path === clean || path.startsWith(clean + "/");
+};
+---
+
+<header class="site-header" id="site-header">
+  <div class="container site-header__inner">
+    <Logo />
+
+    <nav class="nav-desktop" aria-label="主导航">
+      <ul>
+        {
+          mainNav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class:list={["nav-link", { "nav-link--active": isActive(item.href) }]}
+                aria-current={isActive(item.href) ? "page" : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      <span class="lang-switch">中文 / <span class="lang-switch__soon">EN 即将上线</span></span>
+      <Button href="/contact" size="md" icon="arrowRight" class="header-cta">获取报价</Button>
+      <button
+        type="button"
+        class="nav-toggle"
+        id="nav-toggle"
+        aria-label="打开菜单"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <Icon name="menu" size={24} />
+      </button>
+    </div>
+  </div>
+
+  <!-- 移动端菜单 -->
+  <div class="mobile-menu" id="mobile-menu" hidden>
+    <nav class="container" aria-label="移动端导航">
+      <ul>
+        {
+          mainNav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class:list={["mobile-link", { "mobile-link--active": isActive(item.href) }]}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <Button href="/contact" fullWidth size="lg" icon="arrowRight">获取报价</Button>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.86);
+    backdrop-filter: saturate(180%) blur(12px);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
+    border-bottom: 1px solid var(--color-line);
+  }
+  .site-header__inner {
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  .nav-desktop ul {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .nav-link {
+    display: inline-flex;
+    padding: 0.5rem 0.85rem;
+    border-radius: var(--radius-md);
+    color: var(--color-ink-2);
+    font-weight: var(--weight-medium);
+    font-size: var(--text-base);
+    transition:
+      color var(--transition-fast),
+      background-color var(--transition-fast);
+  }
+  .nav-link:hover {
+    color: var(--color-primary);
+    background: var(--color-primary-soft);
+  }
+  .nav-link--active {
+    color: var(--color-primary);
+    font-weight: var(--weight-semibold);
+  }
+
+  .site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+  .lang-switch {
+    font-size: var(--text-xs);
+    color: var(--color-muted);
+    white-space: nowrap;
+  }
+  .lang-switch__soon {
+    color: var(--color-faint);
+  }
+
+  .nav-toggle {
+    display: none;
+    padding: 0.4rem;
+    border-radius: var(--radius-sm);
+    color: var(--color-ink);
+  }
+  .nav-toggle:hover {
+    background: var(--color-bg-soft);
+  }
+
+  .mobile-menu {
+    border-bottom: 1px solid var(--color-line);
+    background: #fff;
+    padding-block: 1rem 1.5rem;
+  }
+  .mobile-menu ul {
+    display: grid;
+    gap: 0.15rem;
+    margin-bottom: 1rem;
+  }
+  .mobile-link {
+    display: block;
+    padding: 0.75rem 0.75rem;
+    border-radius: var(--radius-md);
+    color: var(--color-ink);
+    font-weight: var(--weight-medium);
+    font-size: var(--text-md);
+  }
+  .mobile-link:hover,
+  .mobile-link--active {
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+  }
+
+  /* 隐藏语言提示，给 7 项导航更多空间（中等宽度优先保证导航不挤） */
+  @media (max-width: 1080px) {
+    .lang-switch {
+      display: none;
+    }
+  }
+
+  /* 响应式断点：导航较多，1024px 以下切换为汉堡菜单避免拥挤 */
+  @media (max-width: 1024px) {
+    .nav-desktop,
+    .lang-switch,
+    .header-cta {
+      display: none;
+    }
+    .nav-toggle {
+      display: inline-flex;
+    }
+  }
+  @media (min-width: 1025px) {
+    .mobile-menu {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById("nav-toggle");
+  const menu = document.getElementById("mobile-menu");
+  if (toggle && menu) {
+    toggle.addEventListener("click", () => {
+      const open = menu.hasAttribute("hidden");
+      if (open) {
+        menu.removeAttribute("hidden");
+        toggle.setAttribute("aria-expanded", "true");
+        toggle.setAttribute("aria-label", "关闭菜单");
+      } else {
+        menu.setAttribute("hidden", "");
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.setAttribute("aria-label", "打开菜单");
+      }
+    });
+    // 点击链接后自动关闭
+    menu.querySelectorAll("a").forEach((a) =>
+      a.addEventListener("click", () => {
+        menu.setAttribute("hidden", "");
+        toggle.setAttribute("aria-expanded", "false");
+      })
+    );
+  }
+</script>

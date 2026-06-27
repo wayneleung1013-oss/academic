@@ -1,0 +1,242 @@
+/* =============================================================
+   ScholarFormat Studio — 全局样式 (Global Styles)
+   ============================================================= */
+
+@import "./tokens.css";
+
+/* ---------- Reset / Normalize ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-height) + 1rem);
+  tab-size: 4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--color-ink);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-primary-strong);
+}
+
+ul,
+ol {
+  list-style: none;
+  padding: 0;
+}
+
+/* ---------- Typography 基础 ---------- */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: var(--leading-tight);
+  font-weight: var(--weight-bold);
+  color: var(--color-ink);
+  text-wrap: balance;
+  letter-spacing: -0.01em;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--radius-sm);
+}
+
+::selection {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+/* ---------- 通用工具类 ---------- */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-pad);
+}
+
+.container--narrow {
+  max-width: var(--container-narrow);
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* 跳到主内容（可访问性） */
+.skip-link {
+  position: absolute;
+  left: var(--space-4);
+  top: -120px;
+  z-index: 200;
+  background: var(--color-primary);
+  color: #fff;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-md);
+  font-weight: var(--weight-semibold);
+  transition: top var(--transition);
+}
+.skip-link:focus {
+  top: var(--space-4);
+  color: #fff;
+}
+
+/* 段落小标题样式（kicker / eyebrow） */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.lead {
+  font-size: var(--text-lg);
+  color: var(--color-ink-2);
+  line-height: var(--leading-relaxed);
+}
+
+.text-muted {
+  color: var(--color-muted);
+}
+
+/* 富文本内容区（用于隐私政策、条款等长文） */
+.prose {
+  color: var(--color-ink-2);
+  line-height: var(--leading-relaxed);
+  font-size: var(--text-md);
+}
+.prose--compact {
+  font-size: var(--text-sm);
+  line-height: 1.72;
+}
+.prose h2 {
+  font-size: var(--text-xl);
+  margin-top: var(--space-7);
+  margin-bottom: var(--space-3);
+  color: var(--color-ink);
+}
+.prose h3 {
+  font-size: var(--text-lg);
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-2);
+}
+.prose p {
+  margin-bottom: var(--space-4);
+}
+.prose ul {
+  list-style: disc;
+  padding-left: 1.4rem;
+  margin-bottom: var(--space-4);
+  display: grid;
+  gap: 0.4rem;
+}
+.prose li {
+  padding-left: 0.2rem;
+}
+.prose strong {
+  color: var(--color-ink);
+  font-weight: var(--weight-semibold);
+}
+.prose a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.prose--compact h2 {
+  font-size: var(--text-lg);
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-2);
+}
+.prose--compact h3 {
+  font-size: var(--text-base);
+}
+.prose--compact p,
+.prose--compact ul {
+  margin-bottom: var(--space-3);
+}
+.prose--compact ul {
+  gap: 0.28rem;
+}

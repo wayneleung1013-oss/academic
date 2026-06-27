@@ -1,0 +1,246 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Section from "../components/Section.astro";
+import Button from "../components/Button.astro";
+import Icon from "../components/Icon.astro";
+import ContactForm from "../components/ContactForm.astro";
+import { site } from "../config/site";
+
+const prepItems = [
+  "目标期刊 / 会议名称",
+  "author guidelines 链接或排版模板",
+  "稿件字数",
+  "图表与参考文献数量",
+  "是否需要 LaTeX / XML",
+  "期望交付时间",
+];
+
+const hasContact = Boolean(site.contact.email || site.contact.wechat || site.contact.whatsapp);
+---
+
+<BaseLayout
+  title="联系我们"
+  description="联系 ScholarFormat Studio：填写表单告诉我们目标期刊 / 会议、稿件字数、图表与参考文献数量、是否需要 LaTeX 或 XML，我们会尽快确认服务范围并给出报价。"
+>
+  <PageHeader
+    eyebrow="Contact"
+    title="联系我们"
+    titleEn="Tell us about your manuscript"
+    lead="填写下面的表单，告诉我们目标期刊 / 会议与稿件信息，我们会尽快确认服务范围并给出报价。"
+  />
+
+  <Section>
+    <div class="contact-grid">
+      <div class="contact-grid__main">
+        <ContactForm />
+      </div>
+
+      <aside class="contact-grid__aside">
+        <div class="aside-card">
+          <h2 class="aside-card__title">提交前可准备</h2>
+          <p class="aside-card__hint text-muted">
+            以下信息能帮助我们更快确认服务范围并给出准确报价。
+          </p>
+          <ul class="prep-list">
+            {
+              prepItems.map((item) => (
+                <li class="prep-list__item">
+                  <Icon name="check" size={18} class="prep-list__icon" />
+                  <span>{item}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="aside-card">
+          <div class="aside-card__head">
+            <Icon name="clock" size={20} class="aside-card__head-icon" />
+            <h2 class="aside-card__title aside-card__title--inline">响应时间</h2>
+          </div>
+          <p class="aside-card__text text-muted">
+            通常 1 个工作日内回复。个人稿件一般在 1–3 个工作日内交付，加急需求可另行约定。
+          </p>
+        </div>
+
+        <div class="aside-card aside-card--accent">
+          <h2 class="aside-card__title">想直接上传文件？</h2>
+          <p class="aside-card__text text-muted">
+            如果稿件已经准备好，也可以先上传，我们看过后再与您确认细节。
+          </p>
+          <Button href="/upload" variant="secondary" icon="upload" iconPosition="left">
+            上传稿件
+          </Button>
+        </div>
+
+        <div class="aside-card">
+          <h2 class="aside-card__title">其他联系方式</h2>
+          {
+            hasContact ? (
+              <ul class="contact-list">
+                {site.contact.email && (
+                  <li class="contact-list__item">
+                    <Icon name="mail" size={18} class="contact-list__icon" />
+                    <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
+                  </li>
+                )}
+                {site.contact.wechat && (
+                  <li class="contact-list__item">
+                    <Icon name="chat" size={18} class="contact-list__icon" />
+                    <span>微信：{site.contact.wechat}</span>
+                  </li>
+                )}
+                {site.contact.whatsapp && (
+                  <li class="contact-list__item">
+                    <Icon name="phone" size={18} class="contact-list__icon" />
+                    <span>WhatsApp：{site.contact.whatsapp}</span>
+                  </li>
+                )}
+              </ul>
+            ) : (
+              <p class="aside-card__text text-muted">联系方式即将公布，可先通过表单提交需求。</p>
+            )
+          }
+        </div>
+      </aside>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: clamp(var(--space-6), 3vw, var(--space-9));
+    align-items: start;
+  }
+
+  .contact-grid__aside {
+    position: sticky;
+    top: calc(var(--header-height) + var(--space-4));
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .aside-card {
+    background: var(--color-bg-subtle);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+  }
+
+  .aside-card--accent {
+    background: var(--color-primary-soft);
+    border-color: var(--color-line-strong);
+  }
+
+  .aside-card__title {
+    font-size: var(--text-md);
+    font-weight: var(--weight-semibold);
+    color: var(--color-ink);
+    margin: 0;
+  }
+
+  .aside-card__title--inline {
+    margin: 0;
+  }
+
+  .aside-card__head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .aside-card__head-icon {
+    color: var(--color-primary);
+    flex-shrink: 0;
+  }
+
+  .aside-card__hint {
+    margin: var(--space-2) 0 var(--space-3);
+    font-size: var(--text-sm);
+  }
+
+  .aside-card__text {
+    margin: var(--space-2) 0 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+  }
+
+  .aside-card--accent :global(.btn) {
+    margin-top: var(--space-4);
+  }
+
+  .prep-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .prep-list__item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-ink-2);
+    line-height: var(--leading-snug);
+  }
+
+  .prep-list__icon {
+    color: var(--color-primary);
+    flex-shrink: 0;
+    margin-top: 0.1em;
+  }
+
+  .contact-list {
+    list-style: none;
+    margin: var(--space-3) 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .contact-list__item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-ink-2);
+  }
+
+  .contact-list__icon {
+    color: var(--color-primary);
+    flex-shrink: 0;
+  }
+
+  .contact-list__item a {
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+
+  .contact-list__item a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 900px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .contact-grid__aside {
+      position: static;
+      top: auto;
+      order: 2;
+    }
+
+    .contact-grid__main {
+      order: 1;
+    }
+  }
+</style>

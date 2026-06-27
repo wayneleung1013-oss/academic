@@ -1,0 +1,49 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Section from "../components/Section.astro";
+import FaqAccordion from "../components/FaqAccordion.astro";
+import CTABanner from "../components/CTABanner.astro";
+import { faqs } from "../content/faq";
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: f.a,
+    },
+  })),
+};
+---
+
+<BaseLayout
+  title="常见问题"
+  description="ScholarFormat Studio 常见问题：是否代写、是否语言润色、能否保证录用、是否按 author guidelines 排版、能否处理 LaTeX / Overleaf、能否生成 JATS XML、交付时间、修改次数、文件保密、是否代投稿等。"
+>
+  <script
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify(faqJsonLd)}
+    is:inline
+  />
+
+  <PageHeader
+    eyebrow="FAQ"
+    title="常见问题"
+    titleEn="Frequently asked questions"
+    lead="关于排版服务范围、交付、修改与保密的常见问题。还有疑问可直接联系我们。"
+  />
+
+  <Section narrow>
+    <FaqAccordion items={faqs} />
+  </Section>
+
+  <CTABanner
+    title="没找到答案？"
+    desc="直接联系我们，说明你的稿件与目标期刊，我们会具体解答并给出报价。"
+  />
+</BaseLayout>

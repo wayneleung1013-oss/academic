@@ -1,0 +1,385 @@
+---
+import Icon from "./Icon.astro";
+import Badge from "./Badge.astro";
+import Button from "./Button.astro";
+import type { Service } from "../content/services";
+
+/** 服务页：单个服务的完整介绍块。 */
+export interface Props {
+  service: Service;
+  index: number;
+}
+const { service, index } = Astro.props;
+const audienceLabel =
+  service.audience === "author"
+    ? "个人作者"
+    : service.audience === "institution"
+      ? "机构客户"
+      : "个人 / 机构";
+---
+
+<article class="svc" id={service.id}>
+  <div class="svc__head">
+    <div class="svc__head-main">
+      <span class="svc__icon" aria-hidden="true">
+        <Icon name={service.icon} size={26} />
+      </span>
+      <div>
+        <p class="svc__num">服务 {String(index + 1).padStart(2, "0")}</p>
+        <h3 class="svc__name">{service.nameZh}</h3>
+        <p class="svc__name-en">{service.name}</p>
+      </div>
+    </div>
+    <div class="svc__meta">
+      <Badge variant="primary">{service.price}</Badge>
+      <Badge variant="neutral">{audienceLabel}</Badge>
+    </div>
+  </div>
+
+  <div class="svc__body">
+    <div class="svc__col">
+      <h4 class="svc__subtitle">适合对象</h4>
+      <ul class="svc__list svc__list--plain">
+        {service.suitableFor.map((s) => <li>{s}</li>)}
+      </ul>
+
+      {
+        service.manuscriptTypes && (
+          <>
+            <h4 class="svc__subtitle svc__subtitle--gap">适合稿件类型</h4>
+            <ul class="svc__list svc__list--plain">
+              {service.manuscriptTypes.map((s) => (
+                <li>{s}</li>
+              ))}
+            </ul>
+          </>
+        )
+      }
+
+      {
+        service.scenarios && (
+          <>
+            <h4 class="svc__subtitle svc__subtitle--gap">适合场景</h4>
+            <ul class="svc__list svc__list--plain">
+              {service.scenarios.map((s) => (
+                <li>{s}</li>
+              ))}
+            </ul>
+          </>
+        )
+      }
+    </div>
+
+    <div class="svc__col">
+      <h4 class="svc__subtitle">包含服务</h4>
+      <ul class="svc__list svc__list--check">
+        {
+          service.includes.map((s) => (
+            <li>
+              <Icon name="check" size={17} class="svc__check" />
+              <span>{s}</span>
+            </li>
+          ))
+        }
+      </ul>
+
+      {
+        service.valueAdded && (
+          <>
+            <h4 class="svc__subtitle svc__subtitle--gap">可选增值服务</h4>
+            <ul class="svc__list svc__list--plus">
+              {service.valueAdded.map((s) => (
+                <li>
+                  <Icon name="check" size={17} class="svc__plus" />
+                  <span>{s}</span>
+                </li>
+              ))}
+            </ul>
+          </>
+        )
+      }
+    </div>
+
+    {
+      service.excludes && service.excludes.length > 0 && (
+        <div class="svc__col">
+          <h4 class="svc__subtitle svc__subtitle--muted">不包含</h4>
+          <ul class="svc__list svc__list--x">
+            {service.excludes.map((s) => (
+              <li>
+                <Icon name="x" size={16} class="svc__x" />
+                <span>{s}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+  </div>
+
+  {
+    service.xmlPricing && (
+      <div class="svc__xml">
+        <h4 class="svc__subtitle">XML 价格区分</h4>
+        <div class="svc__xml-scroll" role="region" aria-label="JATS XML 价格区分" tabindex="0">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">XML 类型</th>
+                <th scope="col">价格</th>
+                <th scope="col">适合场景</th>
+              </tr>
+            </thead>
+            <tbody>
+              {service.xmlPricing.map((row) => (
+                <tr>
+                  <th scope="row">{row.type}</th>
+                  <td class="svc__xml-price">{row.price}</td>
+                  <td>{row.scenario}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    )
+  }
+
+  {
+    (service.suitableRange || service.note) && (
+      <div class="svc__notes">
+        {service.suitableRange && (
+          <p class="svc__note">
+            <Icon name="target" size={16} class="svc__note-icon" />
+            <span>
+              <strong>适用范围建议：</strong>
+              {service.suitableRange}
+            </span>
+          </p>
+        )}
+        {service.note && (
+          <p class="svc__note">
+            <Icon name="quote" size={16} class="svc__note-icon" />
+            <span>{service.note}</span>
+          </p>
+        )}
+      </div>
+    )
+  }
+
+  <div class="svc__cta">
+    <Button href="/contact" variant="primary" size="md" icon="arrowRight">就此服务获取报价</Button>
+    <Button href="/upload" variant="secondary" size="md" icon="upload" iconPosition="left">
+      上传稿件
+    </Button>
+  </div>
+</article>
+
+<style>
+  .svc {
+    scroll-margin-top: calc(var(--header-height) + 1.5rem);
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-xl);
+    padding: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .svc__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 1.4rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+  .svc__head-main {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .svc__icon {
+    display: grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    border-radius: var(--radius-md);
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+    flex-shrink: 0;
+  }
+  .svc__num {
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+  .svc__name {
+    font-size: var(--text-xl);
+    margin-top: 0.15rem;
+  }
+  .svc__name-en {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    margin-top: 0.1rem;
+  }
+  .svc__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .svc__body {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: clamp(1.2rem, 0.5rem + 2vw, 2.4rem);
+    padding-block: 1.6rem;
+  }
+  .svc__subtitle {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    color: var(--color-ink);
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid var(--color-primary-soft);
+  }
+  .svc__subtitle--gap {
+    margin-top: 1.4rem;
+  }
+  .svc__subtitle--muted {
+    color: var(--color-muted);
+    border-bottom-color: var(--color-line);
+  }
+  .svc__list {
+    display: grid;
+    gap: 0.55rem;
+    font-size: var(--text-sm);
+    color: var(--color-ink-2);
+  }
+  .svc__list--plain li {
+    position: relative;
+    padding-left: 1rem;
+  }
+  .svc__list--plain li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--color-primary);
+  }
+  .svc__list--check li,
+  .svc__list--x li,
+  .svc__list--plus li {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+    line-height: var(--leading-snug);
+  }
+  .svc__check {
+    color: var(--color-success);
+    margin-top: 0.1rem;
+    flex-shrink: 0;
+  }
+  .svc__plus {
+    color: var(--color-primary);
+    margin-top: 0.1rem;
+    flex-shrink: 0;
+  }
+  .svc__x {
+    color: var(--color-faint);
+    margin-top: 0.15rem;
+    flex-shrink: 0;
+  }
+  .svc__list--x li {
+    color: var(--color-muted);
+  }
+
+  /* XML 价格表 */
+  .svc__xml {
+    padding-bottom: 1.6rem;
+  }
+  .svc__xml-scroll {
+    overflow-x: auto;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+  }
+  .svc__xml table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+    min-width: 460px;
+  }
+  .svc__xml thead th {
+    text-align: left;
+    font-size: var(--text-xs);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    padding: 0.7rem 1rem;
+    background: var(--color-bg-subtle);
+    border-bottom: 1px solid var(--color-line);
+  }
+  .svc__xml tbody tr {
+    border-bottom: 1px solid var(--color-line);
+  }
+  .svc__xml tbody tr:last-child {
+    border-bottom: none;
+  }
+  .svc__xml tbody th {
+    text-align: left;
+    font-weight: var(--weight-semibold);
+    color: var(--color-ink);
+    padding: 0.75rem 1rem;
+    white-space: nowrap;
+  }
+  .svc__xml tbody td {
+    padding: 0.75rem 1rem;
+    color: var(--color-ink-2);
+    vertical-align: top;
+  }
+  .svc__xml-price {
+    color: var(--color-primary);
+    font-weight: var(--weight-semibold);
+    white-space: nowrap;
+  }
+
+  /* 说明 / 适用范围 */
+  .svc__notes {
+    display: grid;
+    gap: 0.6rem;
+    padding: 1rem 1.2rem;
+    background: var(--color-bg-subtle);
+    border-radius: var(--radius-md);
+    margin-bottom: 1.6rem;
+  }
+  .svc__note {
+    display: flex;
+    gap: 0.55rem;
+    align-items: flex-start;
+    font-size: var(--text-sm);
+    color: var(--color-ink-2);
+    line-height: var(--leading-normal);
+  }
+  .svc__note-icon {
+    color: var(--color-primary);
+    margin-top: 0.15rem;
+    flex-shrink: 0;
+  }
+  .svc__note strong {
+    color: var(--color-ink);
+    font-weight: var(--weight-semibold);
+  }
+
+  .svc__cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--color-line);
+  }
+</style>

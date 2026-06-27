@@ -1,0 +1,186 @@
+---
+import "../styles/forms.css";
+import Button from "./Button.astro";
+import { site } from "../config/site";
+import { customerTypes, serviceOptions } from "../content/forms";
+
+const endpoint = site.forms.contactEndpoint;
+const mailto = site.contact.email;
+---
+
+<form
+  class="form"
+  id="contact-form"
+  data-endpoint={endpoint}
+  data-mailto={mailto}
+  data-success={site.forms.contactSuccess}
+  novalidate
+>
+  <div class="form__grid">
+    <div class="field">
+      <label class="field__label" for="cf-name">姓名 <span class="field__req">*</span></label>
+      <input class="input" id="cf-name" name="name" type="text" required placeholder="您的称呼" />
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="cf-email">邮箱 <span class="field__req">*</span></label>
+      <input
+        class="input"
+        id="cf-email"
+        name="email"
+        type="email"
+        required
+        placeholder="name@example.com"
+      />
+    </div>
+
+    <div class="field field--full">
+      <label class="field__label" for="cf-contact">微信 / WhatsApp</label>
+      <input
+        class="input"
+        id="cf-contact"
+        name="wechat_whatsapp"
+        type="text"
+        placeholder="微信号或 WhatsApp 号码（选填）"
+      />
+    </div>
+
+    <div class="field field--full">
+      <span class="field__label">客户类型</span>
+      <div class="options" role="radiogroup" aria-label="客户类型">
+        {
+          customerTypes.map((t, i) => (
+            <label class="option">
+              <input type="radio" name="customer_type" value={t} checked={i === 0} />
+              <span class="option__chip">{t}</span>
+            </label>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="field field--full">
+      <span class="field__label" id="cf-services-label">需要的服务 <span class="field__hint">（可多选）</span></span>
+      <div class="options" role="group" aria-labelledby="cf-services-label">
+        {
+          serviceOptions.map((s) => (
+            <label class="option">
+              <input type="checkbox" name="services" value={s} />
+              <span class="option__chip">{s}</span>
+            </label>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="cf-journal">目标期刊 / 会议名称</label>
+      <input
+        class="input"
+        id="cf-journal"
+        name="target_journal"
+        type="text"
+        placeholder="如 IEEE Access、某会议名称"
+      />
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="cf-guidelines">目标期刊 author guidelines 链接</label>
+      <input
+        class="input"
+        id="cf-guidelines"
+        name="guidelines_url"
+        type="url"
+        placeholder="https://..."
+      />
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="cf-words">稿件字数</label>
+      <input
+        class="input"
+        id="cf-words"
+        name="word_count"
+        type="text"
+        inputmode="numeric"
+        placeholder="如 6000"
+      />
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="cf-figures">图表数量</label>
+      <input
+        class="input"
+        id="cf-figures"
+        name="figure_count"
+        type="text"
+        inputmode="numeric"
+        placeholder="如 8"
+      />
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="cf-refs">参考文献数量</label>
+      <input
+        class="input"
+        id="cf-refs"
+        name="reference_count"
+        type="text"
+        inputmode="numeric"
+        placeholder="如 45"
+      />
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="cf-deadline">期望交付时间</label>
+      <input
+        class="input"
+        id="cf-deadline"
+        name="deadline"
+        type="text"
+        placeholder="如 3 个工作日 / 某月某日前"
+      />
+    </div>
+
+    <div class="field">
+      <span class="field__label">是否需要 LaTeX</span>
+      <div class="toggle-group" role="radiogroup" aria-label="是否需要 LaTeX">
+        <label><input type="radio" name="need_latex" value="是" /><span>是</span></label>
+        <label><input type="radio" name="need_latex" value="否" checked /><span>否</span></label>
+      </div>
+    </div>
+
+    <div class="field">
+      <span class="field__label">是否需要 XML</span>
+      <div class="toggle-group" role="radiogroup" aria-label="是否需要 XML">
+        <label><input type="radio" name="need_xml" value="是" /><span>是</span></label>
+        <label><input type="radio" name="need_xml" value="否" checked /><span>否</span></label>
+      </div>
+    </div>
+
+    <div class="field field--full">
+      <label class="field__label" for="cf-notes">备注说明</label>
+      <textarea
+        class="textarea"
+        id="cf-notes"
+        name="notes"
+        placeholder="补充任何有助于我们报价的信息，如学科领域、特殊格式要求等。"></textarea>
+    </div>
+  </div>
+
+  <div class="form__footer">
+    <label class="form__consent">
+      <input type="checkbox" id="cf-consent" name="consent" required />
+      <span>我已阅读并同意 <a href="/privacy">隐私政策</a>，并理解文件仅用于本次排版服务。</span>
+    </label>
+    <div class="form__status" id="cf-status" role="status" aria-live="polite"></div>
+    <div>
+      <Button type="submit" size="lg" icon="arrowRight">提交需求，获取报价</Button>
+    </div>
+  </div>
+</form>
+
+<script>
+  import { initContactForm } from "../scripts/contact-form";
+  initContactForm();
+</script>

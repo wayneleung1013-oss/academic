@@ -1,0 +1,81 @@
+---
+/**
+ * 区块容器：统一纵向间距与背景，可选区块标题。
+ * <Section variant="subtle" eyebrow="服务" title="..." lead="...">...</Section>
+ */
+export interface Props {
+  variant?: "default" | "subtle" | "dark";
+  eyebrow?: string;
+  title?: string;
+  lead?: string;
+  align?: "left" | "center";
+  narrow?: boolean;
+  id?: string;
+  class?: string;
+}
+
+const {
+  variant = "default",
+  eyebrow,
+  title,
+  lead,
+  align = "left",
+  narrow = false,
+  id,
+  class: className = "",
+} = Astro.props;
+
+const hasHeader = Boolean(eyebrow || title || lead);
+---
+
+<section class={`section section--${variant} ${className}`} id={id}>
+  <div class={`container ${narrow ? "container--narrow" : ""}`}>
+    {
+      hasHeader && (
+        <header class={`section__header section__header--${align}`}>
+          {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+          {title && <h2 class="section__title">{title}</h2>}
+          {lead && <p class="lead section__lead">{lead}</p>}
+        </header>
+      )
+    }
+    <slot />
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-block: clamp(3rem, 2rem + 5vw, 5.5rem);
+  }
+  .section--subtle {
+    background: var(--color-bg-subtle);
+  }
+  .section--dark {
+    background: var(--color-primary-strong);
+    color: var(--color-ink-invert);
+  }
+  .section--dark :global(.section__title) {
+    color: #fff;
+  }
+
+  .section__header {
+    margin-bottom: clamp(2rem, 1rem + 3vw, 3rem);
+    max-width: 56ch;
+  }
+  .section__header--center {
+    margin-inline: auto;
+    text-align: center;
+  }
+  .section__header--center .eyebrow {
+    justify-content: center;
+  }
+
+  .section__title {
+    font-size: var(--text-3xl);
+    margin-top: 0.6rem;
+    color: var(--color-ink);
+  }
+  .section__lead {
+    margin-top: 0.9rem;
+  }
+</style>

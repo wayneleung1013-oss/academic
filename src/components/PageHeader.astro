@@ -1,0 +1,41 @@
+---
+/** 内页页眉（标题区）。 */
+export interface Props {
+  eyebrow?: string;
+  title: string;
+  titleEn?: string;
+  lead?: string;
+}
+const { eyebrow, title, titleEn, lead } = Astro.props;
+---
+
+<section class="page-header">
+  <div class="container container--narrow">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h1 class="page-header__title">{title}</h1>
+    {titleEn && <p class="page-header__en">{titleEn}</p>}
+    {lead && <p class="lead page-header__lead">{lead}</p>}
+  </div>
+</section>
+
+<style>
+  .page-header {
+    background: linear-gradient(180deg, var(--color-primary-soft), transparent);
+    border-bottom: 1px solid var(--color-line);
+    padding-block: clamp(2.5rem, 1.5rem + 4vw, 4.5rem);
+  }
+  .page-header__title {
+    font-size: var(--text-4xl);
+    margin-top: 0.5rem;
+  }
+  .page-header__en {
+    color: var(--color-muted);
+    font-size: var(--text-md);
+    margin-top: 0.4rem;
+    font-style: italic;
+  }
+  .page-header__lead {
+    margin-top: 1rem;
+    max-width: 60ch;
+  }
+</style>

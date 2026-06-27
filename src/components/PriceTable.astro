@@ -1,0 +1,120 @@
+---
+import Icon from "./Icon.astro";
+import type { PriceRow } from "../content/pricing";
+
+/** 价格表：服务 / 价格 / 适合对象，支持点击跳转。 */
+export interface Props {
+  caption: string;
+  rows: PriceRow[];
+}
+const { caption, rows } = Astro.props;
+---
+
+<div class="price-table">
+  <h3 class="price-table__caption">{caption}</h3>
+  <div class="price-table__scroll" role="region" aria-label={caption} tabindex="0">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">服务</th>
+          <th scope="col">价格</th>
+          <th scope="col">适合对象</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          rows.map((row) => (
+            <tr>
+              <th scope="row">
+                {row.href ? (
+                  <a href={row.href} class="price-table__svc">
+                    {row.service}
+                    <Icon name="arrowRight" size={14} />
+                  </a>
+                ) : (
+                  row.service
+                )}
+              </th>
+              <td class="price-table__price">{row.price}</td>
+              <td class="price-table__suit">{row.suitableFor}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<style>
+  .price-table {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+  .price-table__caption {
+    font-size: var(--text-lg);
+    padding: 1.1rem 1.4rem;
+    background: var(--color-bg-subtle);
+    border-bottom: 1px solid var(--color-line);
+  }
+  .price-table__scroll {
+    overflow-x: auto;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+    min-width: 520px;
+  }
+  thead th {
+    text-align: left;
+    font-weight: var(--weight-semibold);
+    color: var(--color-muted);
+    font-size: var(--text-xs);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.85rem 1.4rem;
+    background: #fff;
+    border-bottom: 1px solid var(--color-line);
+  }
+  tbody tr {
+    border-bottom: 1px solid var(--color-line);
+  }
+  tbody tr:last-child {
+    border-bottom: none;
+  }
+  tbody tr:hover {
+    background: var(--color-bg-subtle);
+  }
+  tbody th,
+  tbody td {
+    padding: 1rem 1.4rem;
+    vertical-align: top;
+    text-align: left;
+  }
+  tbody th {
+    font-weight: var(--weight-semibold);
+    color: var(--color-ink);
+    width: 32%;
+  }
+  .price-table__svc {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: var(--color-ink);
+  }
+  .price-table__svc:hover {
+    color: var(--color-primary);
+  }
+  .price-table__price {
+    font-weight: var(--weight-semibold);
+    color: var(--color-primary);
+    white-space: nowrap;
+    width: 24%;
+  }
+  .price-table__suit {
+    color: var(--color-muted);
+  }
+</style>

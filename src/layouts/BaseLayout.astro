@@ -1,0 +1,98 @@
+---
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { site } from "../config/site";
+
+export interface Props {
+  title?: string;
+  description?: string;
+  /** 仅页面标题部分（会套用模板 "%s · ScholarFormat Studio"）；首页传 full=true 用完整标题 */
+  full?: boolean;
+  noindex?: boolean;
+  ogImage?: string;
+}
+
+const {
+  title,
+  description = site.seo.description,
+  full = false,
+  noindex = false,
+  ogImage = site.seo.ogImage,
+} = Astro.props;
+
+const pageTitle = !title
+  ? site.seo.defaultTitle
+  : full
+    ? title
+    : site.seo.titleTemplate.replace("%s", title);
+
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const ogImageUrl = new URL(ogImage, site.url).href;
+
+// 结构化数据（SEO）—— 前台只展示 ScholarFormat Studio 品牌，不含公司主体名称。
+const orgJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: site.brand,
+  alternateName: site.brandZh,
+  description: site.seo.description,
+  url: site.url,
+  slogan: site.tagline,
+  areaServed: "Worldwide",
+  knowsLanguage: ["zh-CN", "en"],
+  ...(site.contact.email ? { email: site.contact.email } : {}),
+};
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content={site.seo.keywords.join(", ")} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonical} />
+
+    <!-- 主题色 / favicon -->
+    <meta name="theme-color" content="#1b4a87" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.brand} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={pageTitle} />
+    <meta property="og:locale" content="zh_CN" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(orgJsonLd)} is:inline />
+    <slot name="head" />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">跳到主要内容</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

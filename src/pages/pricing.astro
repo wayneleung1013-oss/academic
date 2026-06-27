@@ -1,0 +1,254 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Section from "../components/Section.astro";
+import PriceTable from "../components/PriceTable.astro";
+import Icon from "../components/Icon.astro";
+import CTABanner from "../components/CTABanner.astro";
+import {
+  authorPricing,
+  institutionPricing,
+  batchReferencePricing,
+  addons,
+  priceNote,
+} from "../content/pricing";
+---
+
+<BaseLayout
+  title="价格"
+  description="ScholarFormat Studio 论文排版价格：个人作者从 ¥99 起，机构客户按篇或按项目报价，含加急、LaTeX、XML 等加价项说明。最终报价按稿件实际情况确定。"
+>
+  <PageHeader
+    eyebrow="Pricing"
+    title="价格"
+    titleEn="Transparent, flexible pricing"
+    lead="价格按稿件长度、图表与参考文献数量、目标期刊格式要求、LaTeX / XML 复杂度和交付时间灵活确定。以下为常见区间，最终以确认报价为准。"
+  />
+
+  <Section>
+    <div class="price-tables">
+      <PriceTable caption="个人作者服务" rows={authorPricing} />
+      <PriceTable caption="机构客户服务" rows={institutionPricing} />
+    </div>
+
+    <div class="batch-ref">
+      <h3 class="batch-ref__caption">期刊 / 会议批量排版参考价格</h3>
+      <div class="batch-ref__scroll" role="region" aria-label="期刊 / 会议批量排版参考价格" tabindex="0">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">项目类型</th>
+              <th scope="col">建议价格</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              batchReferencePricing.map((row) => (
+                <tr>
+                  <th scope="row">{row.project}</th>
+                  <td class="batch-ref__price">{row.price}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="batch-ref__hint text-muted">
+        批量项目的最终报价按篇数、稿件复杂度、模板要求与交付周期确定，欢迎提交项目信息获取机构报价。
+      </p>
+    </div>
+  </Section>
+
+  <!-- 加价项 -->
+  <Section variant="subtle" eyebrow="加价项" title="加价规则" align="center" narrow>
+    <div class="addons">
+      <div class="addons__scroll" role="region" aria-label="加价项" tabindex="0">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">加价项</th>
+              <th scope="col">加价规则</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              addons.map((a) => (
+                <tr>
+                  <th scope="row">{a.item}</th>
+                  <td>{a.rule}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </Section>
+
+  <!-- 价格说明 -->
+  <Section narrow>
+    <div class="price-note">
+      <span class="price-note__icon"><Icon name="quote" size={22} /></span>
+      <div>
+        <h2 class="price-note__title">价格说明</h2>
+        <p>{priceNote}</p>
+        <p class="price-note__sub">
+          如不确定该选哪种服务或具体费用，欢迎先提交需求，我们会根据你的稿件给出明确报价后再开始。
+        </p>
+      </div>
+    </div>
+  </Section>
+
+  <CTABanner
+    title="需要一份确切报价？"
+    desc="提交稿件信息（字数、图表、参考文献、目标期刊与交付时间），我们会尽快给出明确价格。"
+  />
+</BaseLayout>
+
+<style>
+  .price-tables {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .batch-ref {
+    margin-top: 1.5rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+  .batch-ref__caption {
+    font-size: var(--text-lg);
+    padding: 1.1rem 1.4rem;
+    background: var(--color-bg-subtle);
+    border-bottom: 1px solid var(--color-line);
+  }
+  .batch-ref__scroll {
+    overflow-x: auto;
+  }
+  .batch-ref table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+    min-width: 360px;
+  }
+  .batch-ref thead th {
+    text-align: left;
+    font-size: var(--text-xs);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    padding: 0.85rem 1.4rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+  .batch-ref tbody tr {
+    border-bottom: 1px solid var(--color-line);
+  }
+  .batch-ref tbody tr:last-child {
+    border-bottom: none;
+  }
+  .batch-ref tbody tr:hover {
+    background: var(--color-bg-subtle);
+  }
+  .batch-ref tbody th {
+    text-align: left;
+    font-weight: var(--weight-medium);
+    color: var(--color-ink);
+    padding: 0.85rem 1.4rem;
+    width: 60%;
+  }
+  .batch-ref__price {
+    padding: 0.85rem 1.4rem;
+    color: var(--color-primary);
+    font-weight: var(--weight-semibold);
+    white-space: nowrap;
+  }
+  .batch-ref__hint {
+    padding: 1rem 1.4rem;
+    font-size: var(--text-sm);
+    border-top: 1px solid var(--color-line);
+    background: var(--color-bg-subtle);
+  }
+
+  .addons {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+  .addons__scroll {
+    overflow-x: auto;
+  }
+  .addons table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+    min-width: 360px;
+  }
+  .addons thead th {
+    text-align: left;
+    font-size: var(--text-xs);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    padding: 0.85rem 1.4rem;
+    background: var(--color-bg-subtle);
+    border-bottom: 1px solid var(--color-line);
+  }
+  .addons tbody tr {
+    border-bottom: 1px solid var(--color-line);
+  }
+  .addons tbody tr:last-child {
+    border-bottom: none;
+  }
+  .addons tbody tr:hover {
+    background: var(--color-bg-subtle);
+  }
+  .addons tbody th {
+    text-align: left;
+    font-weight: var(--weight-medium);
+    color: var(--color-ink);
+    padding: 0.8rem 1.4rem;
+    width: 60%;
+  }
+  .addons tbody td {
+    padding: 0.8rem 1.4rem;
+    color: var(--color-primary);
+    font-weight: var(--weight-semibold);
+    white-space: nowrap;
+  }
+
+  .price-note {
+    display: flex;
+    gap: 1.1rem;
+    padding: 1.8rem;
+    background: var(--color-primary-soft);
+    border-radius: var(--radius-lg);
+  }
+  .price-note__icon {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    background: #fff;
+    color: var(--color-primary);
+    flex-shrink: 0;
+  }
+  .price-note__title {
+    font-size: var(--text-lg);
+    margin-bottom: 0.4rem;
+  }
+  .price-note p {
+    color: var(--color-ink-2);
+    line-height: var(--leading-relaxed);
+  }
+  .price-note__sub {
+    margin-top: 0.6rem;
+    color: var(--color-muted);
+    font-size: var(--text-sm);
+  }
+</style>
